@@ -5,6 +5,7 @@ import leafMascot from "@/assets/leaf-mascot.png";
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
+  { label: "Video Pitch", href: "#video-pitch" },
   { label: "¿Quiénes Somos?", href: "#quienes-somos" },
   { label: "Misión y Visión", href: "#mision-vision" },
   { label: "Integrantes", href: "#integrantes" },
