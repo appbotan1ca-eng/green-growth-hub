@@ -10,11 +10,11 @@ const fadeUp = {
 };
 
 const members = [
-  { name: "Angelo Samir Rodríguez Zabala", initials: "AR" },
-  { name: "Juan Felipe Contreras Velasco", initials: "JC" },
-  { name: "Santiago Alejandro Castro Bautista", initials: "SC" },
-  { name: "Daniel Esteban Salcedo López", initials: "DS" },
-  { name: "Samira Alexandra", initials: "SA" },
+  { name: "Angelo Samir Rodríguez Zabala", initials: "AR", role: "Director de Proyecto" },
+  { name: "Juan Felipe Contreras Velasco", initials: "JC", role: "Investigación" },
+  { name: "Santiago Alejandro Castro Bautista", initials: "SC", role: "Diseño UX / UI" },
+  { name: "Daniel Esteban Salcedo López", initials: "DS", role: "Desarrollo y Tecnología" },
+  { name: "Samira Alexandra", initials: "SA", role: "Comunicación Digital" },
 ];
 
 const colors = [
@@ -60,8 +60,9 @@ export default function TeamSection() {
                 <span className="text-2xl font-display font-black text-primary-foreground">{m.initials}</span>
               </div>
               <h4 className="font-display font-bold text-foreground text-center text-lg mb-1">{m.name}</h4>
-              <p className="text-sm text-muted-foreground font-body">Estudiante Media Técnica</p>
-              <p className="text-xs text-primary font-display font-semibold mt-1">Inst. Técnico Mercedes Abrego</p>
+              <p className="text-sm text-primary font-display font-bold">{m.role}</p>
+              <p className="text-xs text-muted-foreground font-body mt-1">Estudiante Media Técnica</p>
+              <p className="text-xs text-muted-foreground/80 font-body">Inst. Técnico Mercedes Abrego</p>
             </motion.div>
           ))}
         </motion.div>
