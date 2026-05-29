@@ -5,11 +5,14 @@ import leafMascot from "@/assets/leaf-mascot.png";
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
-  { label: "Video Pitch", href: "#video-pitch" },
-  { label: "¿Quiénes Somos?", href: "#quienes-somos" },
-  { label: "Misión y Visión", href: "#mision-vision" },
-  { label: "Integrantes", href: "#integrantes" },
-  { label: "Elevator Pitch", href: "#elevator-pitch" },
+  { label: "Sobre el proyecto", href: "#sobre-proyecto" },
+  { label: "Equipo", href: "#integrantes" },
+  { label: "Implementación", href: "#implementacion" },
+  { label: "Multimedia", href: "#recursos-multimedia" },
+  { label: "Biblioteca", href: "#biblioteca-digital" },
+  { label: "Impacto", href: "#impacto-ambiental" },
+  { label: "Participación", href: "#participacion" },
+  { label: "Contacto", href: "#contacto" },
 ];
 
 export default function Navbar() {
@@ -24,12 +27,12 @@ export default function Navbar() {
             <span className="font-display text-xl font-bold text-gradient-green">BotaniApp</span>
           </a>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="px-3 py-2 rounded-lg text-sm font-semibold text-foreground/70 hover:text-primary hover:bg-secondary transition-all duration-200"
+                className="px-2.5 py-2 rounded-lg text-[13px] font-semibold text-foreground/70 hover:text-primary hover:bg-secondary transition-all duration-200 whitespace-nowrap"
               >
                 {item.label}
               </a>
@@ -38,7 +41,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2 rounded-lg text-foreground hover:bg-secondary transition-colors"
+            className="lg:hidden p-2 rounded-lg text-foreground hover:bg-secondary transition-colors"
           >
             {open ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -51,7 +54,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden bg-card border-b border-border"
+            className="lg:hidden overflow-hidden bg-card border-b border-border max-h-[70vh] overflow-y-auto"
           >
             <div className="px-4 py-3 space-y-1">
               {navItems.map((item) => (
