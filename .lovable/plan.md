@@ -1,26 +1,43 @@
-## Objetivo
-Agregar el video pitch alojado en Google Drive justo después de la sección de Inicio (Hero), con vista previa reproducible directamente en la página.
+## Plan: Expansión multi-página de BotaniApp
 
-## Cambios
+La landing page actual (`/`) queda intacta. Agrego nuevas rutas en `src/App.tsx` con un layout compartido (Navbar + Footer ya existentes, ampliando Navbar con menú a las nuevas páginas).
 
-1. **Nuevo componente `src/components/PitchVideoSection.tsx`**
-   - Sección con id `video-pitch`, fondo claro acorde al diseño verde existente.
-   - Encabezado con título "Video Pitch" + subtítulo motivador y animaciones `framer-motion` consistentes con las demás secciones.
-   - Tarjeta contenedora con `aspect-video`, bordes redondeados y `shadow-card` que embebe el video usando:
-     ```
-     https://drive.google.com/file/d/1kg9CyoE3IdSmC3oQd6azcdYCM9p0nGe_/preview
-     ```
-     en un `<iframe>` con `allow="autoplay"` y `allowFullScreen`. Esta URL `/preview` es la oficial de Google Drive para vista previa embebida.
-   - Botón secundario "Abrir en Google Drive" que enlaza al `/view` original en una pestaña nueva (fallback si el iframe es bloqueado por permisos del archivo).
-   - Nota breve indicando que el video debe estar compartido como "Cualquier persona con el enlace" para que la vista previa cargue.
+### Estructura de menú final (según plantilla)
+- Inicio → `/`
+- Sobre el proyecto → `/sobre-el-proyecto`
+- Equipo de trabajo → `/equipo`
+- Implementación → `/implementacion`
+- Recursos multimedia → `/recursos-multimedia`
+- Biblioteca digital → `/biblioteca`
+- Impacto ambiental → `/impacto-ambiental`
+- Participación → `/participacion`
+- Contacto → `/contacto`
 
-2. **`src/pages/Index.tsx`**
-   - Importar `PitchVideoSection` y renderizarlo entre `HeroSection` y `WelcomeSection`.
+### Páginas nuevas (cada una en `src/pages/`)
 
-3. **`src/components/Navbar.tsx`**
-   - Agregar item de menú "Video Pitch" → `#video-pitch` después de "Inicio", para mantener navegación coherente (desktop y móvil).
+1. **SobreProyecto.tsx** — Problema identificado, objetivos (general/específicos), justificación, impacto esperado (ambiental, social, educativo), principios del proyecto.
+2. **Equipo.tsx** — Tarjetas con nombre, rol y avatar de cada integrante + sección Elevator Pitch (reusa video Drive).
+3. **Implementacion.tsx** — Etapas (investigación, diseño, elaboración, prueba), evidencias (galería de placeholders), resultados preliminares.
+4. **RecursosMultimedia.tsx** — Embeds: presentación Canva/Genially (placeholder iframe), infografía (imagen), video del proyecto (YouTube placeholder), podcast (8 episodios placeholders con reproductor), video pitch Drive.
+5. **Biblioteca.tsx** — Documentos descargables (placeholders) y enlaces a Open Library, Project Gutenberg, DPLA.
+6. **ImpactoAmbiental.tsx** — Problema ambiental, solución propuesta, beneficios (reducción de residuos, reciclaje, uso responsable) con iconografía.
+7. **Participacion.tsx** — Foro/comentarios (placeholder estático), tutoriales y guías, encuesta de impacto (link a Google Forms placeholder), capacitación, apoyo profesional.
+8. **Contacto.tsx** — Formulario de contacto (frontend solo, sin backend), correo, WhatsApp, redes sociales.
 
-## Notas técnicas
-- No requiere dependencias nuevas ni backend.
-- Usa solo tokens del design system (verdes, tipografías Fredoka/Nunito) ya definidos.
-- Si el archivo de Drive no tiene permiso público, el iframe mostrará el aviso de Google; el botón "Abrir en Drive" sirve como respaldo.
+### Cambios a archivos existentes
+- **src/App.tsx**: registrar las 8 rutas nuevas antes del catch-all.
+- **src/components/Navbar.tsx**: reemplazar los anchors `#...` por `<Link>` de react-router. En la home conservar acceso rápido a las secciones existentes (Quiénes somos, Misión, Equipo, Elevator Pitch) como anchors `/#...`. Menú principal apuntará a las 9 rutas. Mobile menu adaptado.
+- **src/components/Footer.tsx**: añadir columna de navegación con las nuevas rutas.
+
+### Componentes auxiliares
+- **PageLayout.tsx**: wrapper que renderiza `<Navbar />`, `<main>` con `pt-16`, y `<Footer />`. Cada página nueva lo usa.
+- **PageHero.tsx**: encabezado animado reutilizable (título + subtítulo + ícono Lucide) en estilo Duolingo verde.
+
+### Diseño
+- Mantener tokens semánticos verdes ya definidos en `index.css` y `tailwind.config.ts`.
+- Animaciones `framer-motion` consistentes (fade-in + slide-up al hacer scroll).
+- Todo el contenido es placeholder editable; los estudiantes podrán reemplazar textos, imágenes y URLs reales después.
+
+### Fuera de alcance
+- Sin backend (sin Lovable Cloud). Formulario de contacto y foro son solo UI.
+- Sin contenidos reales del proyecto (se dejan placeholders claramente marcados).
