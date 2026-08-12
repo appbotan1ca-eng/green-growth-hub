@@ -3,6 +3,10 @@ import { Hammer, Search, PenTool, Wrench, FlaskConical, Camera, TrendingUp } fro
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
+import evidencia1 from "@/assets/evidencia-1.jpeg";
+import evidencia2 from "@/assets/evidencia-2.jpeg";
+import evidencia3 from "@/assets/evidencia-3.jpeg";
+import evidencia4 from "@/assets/evidencia-4.jpeg";
 
 const etapas = [
   { icon: Search, title: "1. Investigación", text: "Diagnóstico del entorno, encuestas y revisión de fuentes sobre flora local." },
@@ -12,12 +16,10 @@ const etapas = [
 ];
 
 const evidencias = [
-  "Registro fotográfico del trabajo en equipo",
-  "Bocetos y wireframes de la plataforma",
-  "Capturas del prototipo funcional",
-  "Muestras de plantas documentadas",
-  "Sesiones de socialización en el aula",
-  "Pruebas de navegación con usuarios",
+  { img: evidencia1, caption: "Registro fotográfico del trabajo en equipo" },
+  { img: evidencia2, caption: "Bocetos y wireframes de la plataforma" },
+  { img: evidencia3, caption: "Capturas del prototipo funcional" },
+  { img: evidencia4, caption: "Muestras de plantas documentadas" },
 ];
 
 export default function Implementacion() {
@@ -43,25 +45,30 @@ export default function Implementacion() {
           <h2 className="font-display font-black text-3xl text-gradient-green mb-6 flex items-center gap-3">
             <Camera className="text-primary" size={28} /> Evidencias
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 gap-6">
             {evidencias.map((ev, i) => (
               <motion.div
-                key={ev}
+                key={ev.caption}
                 initial={{ opacity: 0, scale: 0.96 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
                 className="rounded-3xl overflow-hidden bg-card border border-border shadow-card"
               >
-                <div className="aspect-video bg-secondary flex items-center justify-center">
-                  <Camera className="text-primary/50" size={36} />
+                <div className="aspect-video bg-secondary overflow-hidden">
+                  <img
+                    src={ev.img}
+                    alt={ev.caption}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
-                <p className="p-4 font-body text-sm text-muted-foreground">{ev}</p>
+                <p className="p-4 font-body text-sm text-muted-foreground">{ev.caption}</p>
               </motion.div>
             ))}
           </div>
           <p className="mt-4 text-xs font-body text-muted-foreground">
-            Espacios reservados: reemplaza cada recuadro por las fotografías reales del proyecto.
+            Evidencias fotográficas del proceso del proyecto.
           </p>
         </div>
 
