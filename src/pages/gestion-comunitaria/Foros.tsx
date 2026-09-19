@@ -77,6 +77,7 @@ export default function Foros() {
     setIsLoadingReplies(true);
     try {
       if (supabaseReady && supabase) {
+        console.log('🔧 Debug loadReplies: querying forum_replies for', topicId);
         const { data, error } = await supabase
           .from('forum_replies')
           .select('*')
@@ -84,15 +85,18 @@ export default function Foros() {
           .order('created_at', { ascending: true });
 
         if (error) {
-          console.log('Supabase error, using local:', error.message);
+          console.error('❌ Supabase loadReplies error:', error);
           setReplies([]);
         } else {
+          console.log('✅ Supabase loadReplies OK:', data?.length || 0, 'replies');
           setReplies(data || []);
         }
       } else {
+        console.log('⚠️ Modo local - loadReplies');
         setReplies([]);
       }
-    } catch {
+    } catch (err) {
+      console.error('❌ loadReplies catch:', err);
       setReplies([]);
     } finally {
       setIsLoadingReplies(false);
@@ -126,6 +130,8 @@ export default function Foros() {
         tags: newTopic.tags.split(",").map(t => t.trim()).filter(Boolean),
       };
 
+      console.log('🔧 Debug handleNewTopic:', { supabaseReady, hasSupabase: !!supabase, topic });
+
       if (supabaseReady && supabase) {
         const { error } = await supabase.from('forum_topics').insert({
           id: topic.id,
@@ -135,7 +141,13 @@ export default function Foros() {
           author_role: topic.author_role,
           tags: topic.tags,
         });
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Supabase insert error:', error);
+          throw error;
+        }
+        console.log('✅ Supabase insert OK');
+      } else {
+        console.log('⚠️ Modo local - no se guardó en Supabase');
       }
 
       setTopics([topic, ...topics]);
@@ -143,8 +155,8 @@ export default function Foros() {
       setShowForm(false);
       toast.success("Tema creado en el foro");
     } catch (err) {
-      console.error(err);
-      toast.error("Error al crear tema");
+      console.error('❌ Error handleNewTopic:', err);
+      toast.error("Error al crear tema: " + (err instanceof Error ? err.message : String(err)));
     } finally {
       setIsLoading(false);
     }
