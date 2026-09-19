@@ -57,6 +57,14 @@ create policy "Public insert topics" on forum_topics
 create policy "Public insert replies" on forum_replies
   for insert with check (true);
 
+-- Public update for forum topics counters (views / replies_count)
+create policy "Public update topics" on forum_topics
+  for update using (true) with check (true);
+
+-- Public update for forum replies
+create policy "Public update replies" on forum_replies
+  for update using (true) with check (true);
+
 -- Public read access for chat messages
 create policy "Public read chat" on chat_messages
   for select using (true);

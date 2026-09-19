@@ -1,4 +1,4 @@
-import { MessageSquare, Send, Loader2, User, Clock, RotateCcw, ArrowRight, ArrowLeft, Eye, AlertCircle } from "lucide-react";
+import { MessageSquare, Send, Loader2, RotateCcw, ArrowRight, ArrowLeft, Eye, AlertCircle, RefreshCw } from "lucide-react";
 import { useState, FormEvent, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
@@ -6,65 +6,130 @@ import SectionCard from "@/components/SectionCard";
 import { toast } from "sonner";
 import { supabase, isSupabaseConfigured, type ForumTopic, type ForumReply } from "@/lib/supabase";
 
-const initialTopics: ForumTopic[] = [
-  {
-    id: "1",
-    title: "¿Qué especies nativas han encontrado en el colegio?",
-    content: "Hemos estado documentando la flora del ITMA y queremos saber qué especies han encontrado ustedes. Compartan fotos y ubicaciones.",
-    author_name: "Juan Felipe Contreras",
-    author_role: "Estudiante 11° - Investigación",
-    created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    replies_count: 12,
-    views_count: 89,
-    tags: ["Flora local", "Biodiversidad", "Ciencia ciudadana"],
-  },
-  {
-    id: "2",
-    title: "Propuesta: Crear un herbario digital colaborativo",
-    content: "Propongo que entre todos creemos un herbario digital con las especies que documentemos. Podríamos usar iNaturalist como base y agregar fichas técnicas propias.",
-    author_name: "Prof. Carlos Mendoza",
-    author_role: "Docente Tecnología e Informática",
-    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    replies_count: 8,
-    views_count: 156,
-    tags: ["Propuesta", "Herbario", "Colaborativo"],
-  },
-  {
-    id: "3",
-    title: "Dudas sobre separación de residuos en los baños",
-    content: "¿Qué contenedor usan para el papel higiénico usado? En la guía dice que va en no aprovechables, pero algunos compañeros lo ponen en reciclables.",
-    author_name: "Estudiante 10°B",
-    author_role: "Estudiante",
-    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    replies_count: 5,
-    views_count: 67,
-    tags: ["Residuos", "Duda", "Baños"],
-  },
-  {
-    id: "4",
-    title: "Experiencia usando iNaturalist para el proyecto",
-    content: "Les cuento mi experiencia usando iNaturalist para identificar las plantas del colegio. La app es muy útil pero a veces falla con especies muy locales. ¿A ustedes les pasa?",
-    author_name: "Samira Alexandra",
-    author_role: "Estudiante 11° - Multimedia",
-    created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    replies_count: 15,
-    views_count: 203,
-    tags: ["iNaturalist", "Tutorial", "Experiencia"],
-  },
-];
+const isValidUuid = (id: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+const normalizeTopic = (topic: ForumTopic): ForumTopic => ({
+  id: topic.id,
+  title: topic.title,
+  content: topic.content,
+  author_name: topic.author_name,
+  author_role: topic.author_role || "Comunidad",
+  created_at: topic.created_at,
+  replies_count: topic.replies_count ?? 0,
+  views_count: topic.views_count ?? 0,
+  tags: topic.tags ?? [],
+});
+
+const normalizeReply = (reply: ForumReply): ForumReply => ({
+  id: reply.id,
+  topic_id: reply.topic_id,
+  content: reply.content,
+  author_name: reply.author_name,
+  author_role: reply.author_role || "Comunidad",
+  created_at: reply.created_at,
+});
 
 export default function Foros() {
-  const [topics, setTopics] = useState<ForumTopic[]>(initialTopics);
+  const [topics, setTopics] = useState<ForumTopic[]>([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(true);
+  const [topicsError, setTopicsError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<ForumTopic | null>(null);
   const [replies, setReplies] = useState<ForumReply[]>([]);
+  const [isLoadingReplies, setIsLoadingReplies] = useState(false);
+  const [repliesError, setRepliesError] = useState<string | null>(null);
   const [newTopic, setNewTopic] = useState({ title: "", content: "", author: "", role: "", tags: "" });
   const [newReply, setNewReply] = useState("");
   const [replyAuthor, setReplyAuthor] = useState("");
   const [replyRole, setReplyRole] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingReplies, setIsLoadingReplies] = useState(false);
-  const [supabaseReady] = useState(isSupabaseConfigured);
+  const [isPublishingTopic, setIsPublishingTopic] = useState(false);
+  const [isPublishingReply, setIsPublishingReply] = useState(false);
+
+  const loadTopics = async () => {
+    setIsLoadingTopics(true);
+    setTopicsError(null);
+    try {
+      if (!supabase || !isSupabaseConfigured) {
+        setTopics([]);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('forum_topics')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setTopics((data ?? []).map(normalizeTopic));
+    } catch (err) {
+      console.error('❌ Error cargando temas:', err);
+      setTopicsError("No se pudieron cargar los temas. Intenta de nuevo.");
+      setTopics([]);
+      toast.error("Error al cargar los temas");
+    } finally {
+      setIsLoadingTopics(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTopics();
+  }, []);
+
+  const loadReplies = async (topicId: string) => {
+    setIsLoadingReplies(true);
+    setRepliesError(null);
+    try {
+      if (!supabase || !isSupabaseConfigured || !isValidUuid(topicId)) {
+        setReplies([]);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('forum_replies')
+        .select('*')
+        .eq('topic_id', topicId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setReplies((data ?? []).map(normalizeReply));
+    } catch (err) {
+      console.error('❌ Error cargando respuestas:', err);
+      setRepliesError("No se pudieron cargar las respuestas.");
+      setReplies([]);
+    } finally {
+      setIsLoadingReplies(false);
+    }
+  };
+
+  const incrementViews = async (topicId: string) => {
+    if (!supabase || !isSupabaseConfigured || !isValidUuid(topicId)) return;
+    try {
+      await supabase.rpc('increment_views', { topic_id: topicId });
+      setTopics(prev => prev.map(t => t.id === topicId ? { ...t, views_count: (t.views_count ?? 0) + 1 } : t));
+    } catch {
+      console.log('No se pudo incrementar las vistas');
+    }
+  };
+
+  const incrementRepliesCount = async (topicId: string) => {
+    if (!supabase) return;
+    try {
+      const { data, error } = await supabase
+        .from('forum_topics')
+        .select('replies_count')
+        .eq('id', topicId)
+        .single();
+      if (error) throw error;
+      const next = (data?.replies_count ?? 0) + 1;
+      const { error: updateError } = await supabase
+        .from('forum_topics')
+        .update({ replies_count: next })
+        .eq('id', topicId);
+      if (updateError) throw updateError;
+      setTopics(prev => prev.map(t => t.id === topicId ? { ...t, replies_count: next } : t));
+    } catch (err) {
+      console.error('No se pudo actualizar replies_count:', err);
+    }
+  };
 
   useEffect(() => {
     if (selectedTopic) {
@@ -73,129 +138,80 @@ export default function Foros() {
     }
   }, [selectedTopic]);
 
-  const loadReplies = async (topicId: string) => {
-    setIsLoadingReplies(true);
-    try {
-      if (supabaseReady && supabase) {
-        console.log('🔧 Debug loadReplies: querying forum_replies for', topicId);
-        const { data, error } = await supabase
-          .from('forum_replies')
-          .select('*')
-          .eq('topic_id', topicId)
-          .order('created_at', { ascending: true });
-
-        if (error) {
-          console.error('❌ Supabase loadReplies error:', error);
-          setReplies([]);
-        } else {
-          console.log('✅ Supabase loadReplies OK:', data?.length || 0, 'replies');
-          setReplies(data || []);
-        }
-      } else {
-        console.log('⚠️ Modo local - loadReplies');
-        setReplies([]);
-      }
-    } catch (err) {
-      console.error('❌ loadReplies catch:', err);
-      setReplies([]);
-    } finally {
-      setIsLoadingReplies(false);
-    }
-  };
-
-  const incrementViews = async (topicId: string) => {
-    if (!supabaseReady || !supabase) return;
-    try {
-      await supabase.rpc('increment_views', { topic_id: topicId });
-      setTopics(topics.map(t => t.id === topicId ? { ...t, views_count: t.views_count + 1 } : t));
-    } catch {
-      console.log('Could not increment views');
-    }
-  };
-
   const handleNewTopic = async (e: FormEvent) => {
     e.preventDefault();
     if (!newTopic.title.trim() || !newTopic.content.trim() || !newTopic.author.trim()) return;
-    setIsLoading(true);
+    if (!supabase || !isSupabaseConfigured) {
+      toast.error("Supabase no está configurado. No se puede publicar el tema.");
+      return;
+    }
+    setIsPublishingTopic(true);
     try {
-      const topic: ForumTopic = {
-        id: supabaseReady ? crypto.randomUUID() : Date.now().toString(),
-        title: newTopic.title,
-        content: newTopic.content,
-        author_name: newTopic.author,
-        author_role: newTopic.role || "Comunidad",
-        created_at: new Date().toISOString(),
-        replies_count: 0,
-        views_count: 1,
-        tags: newTopic.tags.split(",").map(t => t.trim()).filter(Boolean),
-      };
+      const { data, error } = await supabase
+        .from('forum_topics')
+        .insert({
+          id: crypto.randomUUID(),
+          title: newTopic.title.trim(),
+          content: newTopic.content.trim(),
+          author_name: newTopic.author.trim(),
+          author_role: newTopic.role.trim() || "Comunidad",
+          replies_count: 0,
+          views_count: 0,
+          tags: newTopic.tags.split(",").map(t => t.trim()).filter(Boolean),
+        })
+        .select()
+        .single();
 
-      console.log('🔧 Debug handleNewTopic:', { supabaseReady, hasSupabase: !!supabase, topic });
-
-      if (supabaseReady && supabase) {
-        const { error } = await supabase.from('forum_topics').insert({
-          id: topic.id,
-          title: topic.title,
-          content: topic.content,
-          author_name: topic.author_name,
-          author_role: topic.author_role,
-          tags: topic.tags,
-        });
-        if (error) {
-          console.error('❌ Supabase insert error:', error);
-          throw error;
-        }
-        console.log('✅ Supabase insert OK');
-      } else {
-        console.log('⚠️ Modo local - no se guardó en Supabase');
-      }
-
-      setTopics([topic, ...topics]);
+      if (error) throw error;
+      setTopics(prev => [normalizeTopic(data as ForumTopic), ...prev]);
       setNewTopic({ title: "", content: "", author: "", role: "", tags: "" });
       setShowForm(false);
       toast.success("Tema creado en el foro");
     } catch (err) {
-      console.error('❌ Error handleNewTopic:', err);
-      toast.error("Error al crear tema: " + (err instanceof Error ? err.message : String(err)));
+      console.error('❌ Error creando tema:', err);
+      toast.error("Error al crear el tema. Intenta de nuevo.");
     } finally {
-      setIsLoading(false);
+      setIsPublishingTopic(false);
     }
   };
 
   const handleReply = async (e: FormEvent) => {
     e.preventDefault();
     if (!newReply.trim() || !replyAuthor.trim() || !selectedTopic) return;
-    setIsLoading(true);
+    if (!supabase || !isSupabaseConfigured) {
+      toast.error("Supabase no está configurado. No se puede publicar la respuesta.");
+      return;
+    }
+    if (!isValidUuid(selectedTopic.id)) {
+      toast.error("Tema inválido. No se puede responder.");
+      return;
+    }
+    setIsPublishingReply(true);
     try {
-      const reply: ForumReply = {
-        id: supabaseReady ? crypto.randomUUID() : Date.now().toString(),
-        topic_id: selectedTopic.id,
-        content: newReply,
-        author_name: replyAuthor,
-        author_role: replyRole || "Comunidad",
-        created_at: new Date().toISOString(),
-      };
+      const { data, error } = await supabase
+        .from('forum_replies')
+        .insert({
+          id: crypto.randomUUID(),
+          topic_id: selectedTopic.id,
+          content: newReply.trim(),
+          author_name: replyAuthor.trim(),
+          author_role: replyRole.trim() || "Comunidad",
+        })
+        .select()
+        .single();
 
-      if (supabaseReady && supabase) {
-        const { error } = await supabase.from('forum_replies').insert({
-          id: reply.id,
-          topic_id: reply.topic_id,
-          content: reply.content,
-          author_name: reply.author_name,
-          author_role: reply.author_role,
-        });
-        if (error) throw error;
-      }
-
-      setReplies([...replies, reply]);
-      setTopics(topics.map(t => t.id === selectedTopic.id ? { ...t, replies_count: t.replies_count + 1 } : t));
+      if (error) throw error;
+      const reply = normalizeReply(data as ForumReply);
+      setReplies(prev => [...prev, reply]);
+      setTopics(prev => prev.map(t => t.id === selectedTopic.id ? { ...t, replies_count: (t.replies_count ?? 0) + 1 } : t));
       setNewReply("");
+      await incrementRepliesCount(selectedTopic.id);
       toast.success("Respuesta publicada");
     } catch (err) {
-      console.error(err);
-      toast.error("Error al responder");
+      console.error('❌ Error al responder:', err);
+      toast.error("Error al publicar la respuesta. Intenta de nuevo.");
     } finally {
-      setIsLoading(false);
+      setIsPublishingReply(false);
     }
   };
 
@@ -212,11 +228,11 @@ export default function Foros() {
 
   return (
     <PageLayout>
-<PageHero
+      <PageHero
         icon={MessageSquare}
         eyebrow="Gestión Comunitaria"
         title="Foros de la comunidad"
-        subtitle={supabaseReady
+        subtitle={isSupabaseConfigured
           ? "Espacio de discusión e interacción sobre temas del proyecto. Conectado a Supabase."
           : "Espacio de discusión (modo local - configura Supabase para persistencia)"}
       />
@@ -297,11 +313,11 @@ export default function Foros() {
                     <div className="flex gap-2">
                       <button
                         type="submit"
-                        disabled={isLoading}
+                        disabled={isPublishingTopic}
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-display font-bold shadow-playful hover:-translate-y-1 transition-all disabled:opacity-50"
                       >
-                        {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
-                        {isLoading ? "Publicando..." : "Publicar tema"}
+                        {isPublishingTopic ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
+                        {isPublishingTopic ? "Publicando..." : "Publicar tema"}
                       </button>
                       <button
                         type="button"
@@ -315,38 +331,63 @@ export default function Foros() {
                 </SectionCard>
               )}
 
-              <div className="space-y-4">
-                {topics.map((topic) => (
-                  <SectionCard key={topic.id} className="p-6 cursor-pointer hover:shadow-card-hover transition-all" onClick={() => setSelectedTopic(topic)}>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-emerald to-green-bright flex items-center justify-center text-lg font-bold text-primary-foreground shrink-0">
-                        {topic.author_name.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-display font-bold text-foreground mb-1">{topic.title}</h3>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2 flex-wrap">
-                          <span className="font-body">{topic.author_name}</span>
-                          <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-secondary text-primary">{topic.author_role}</span>
-                          <span className="font-body">{formatTime(topic.created_at)}</span>
+              {isLoadingTopics ? (
+                <div className="flex flex-col items-center justify-center py-16 gap-3">
+                  <Loader2 className="animate-spin text-primary" size={28} />
+                  <p className="font-body text-sm text-muted-foreground">Cargando temas...</p>
+                </div>
+              ) : topicsError ? (
+                <div className="p-8 rounded-3xl bg-card border border-border shadow-card text-center">
+                  <AlertCircle className="text-destructive mx-auto mb-3" size={28} />
+                  <p className="font-body text-sm text-muted-foreground mb-4">{topicsError}</p>
+                  <button
+                    onClick={loadTopics}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-primary text-primary-foreground font-display font-bold text-sm shadow-playful hover:-translate-y-1 transition-all"
+                  >
+                    <RefreshCw size={16} /> Reintentar
+                  </button>
+                </div>
+              ) : topics.length === 0 ? (
+                <div className="p-8 rounded-3xl bg-card border border-border shadow-card text-center">
+                  <MessageSquare className="text-primary mx-auto mb-3" size={28} />
+                  <p className="font-body text-sm text-muted-foreground">
+                    No hay temas todavía. Sé el primero en iniciar una conversación.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {topics.map((topic) => (
+                    <SectionCard key={topic.id} className="p-6 cursor-pointer hover:shadow-card-hover transition-all" onClick={() => setSelectedTopic(topic)}>
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-emerald to-green-bright flex items-center justify-center text-lg font-bold text-primary-foreground shrink-0">
+                          {topic.author_name.split(" ").map(n => n[0]).join("").slice(0,2).toUpperCase()}
                         </div>
-                        <p className="font-body text-sm text-muted-foreground line-clamp-2 mb-2">{topic.content}</p>
-                        <div className="flex flex-wrap gap-2">
-                          {topic.tags.map((tag, i) => (
-                            <span key={i} className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary/10 text-primary">
-                              {tag}
-                            </span>
-                          ))}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-display font-bold text-foreground mb-1">{topic.title}</h3>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2 flex-wrap">
+                            <span className="font-body">{topic.author_name}</span>
+                            <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-secondary text-primary">{topic.author_role}</span>
+                            <span className="font-body">{formatTime(topic.created_at)}</span>
+                          </div>
+                          <p className="font-body text-sm text-muted-foreground line-clamp-2 mb-2">{topic.content}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {topic.tags.map((tag, i) => (
+                              <span key={i} className="px-2 py-0.5 text-xs font-semibold rounded-full bg-primary/10 text-primary">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground shrink-0">
+                          <span className="flex items-center gap-1"><MessageSquare size={14} /> {topic.replies_count}</span>
+                          <span className="flex items-center gap-1"><Eye size={14} /> {topic.views_count}</span>
+                          <ArrowRight className="text-primary" size={18} />
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground shrink-0">
-                        <span className="flex items-center gap-1"><MessageSquare size={14} /> {topic.replies_count}</span>
-                        <span className="flex items-center gap-1"><Eye size={14} /> {topic.views_count}</span>
-                        <ArrowRight className="text-primary" size={18} />
-                      </div>
-                    </div>
-                  </SectionCard>
-                ))}
-              </div>
+                    </SectionCard>
+                  ))}
+                </div>
+              )}
             </>
           ) : (
             <div className="space-y-6">
@@ -387,6 +428,11 @@ export default function Foros() {
                   {isLoadingReplies ? (
                     <div className="flex justify-center py-8">
                       <Loader2 className="animate-spin text-primary" size={24} />
+                    </div>
+                  ) : repliesError ? (
+                    <div className="flex flex-col items-center justify-center py-8 gap-3">
+                      <AlertCircle className="text-destructive" size={24} />
+                      <p className="font-body text-sm text-muted-foreground">{repliesError}</p>
                     </div>
                   ) : replies.length === 0 ? (
                     <p className="font-body text-sm text-muted-foreground text-center py-8">No hay respuestas aún. Sé el primero en responder.</p>
@@ -433,11 +479,11 @@ export default function Foros() {
                       />
                       <button
                         type="submit"
-                        disabled={isLoading || !newReply.trim() || !replyAuthor.trim()}
+                        disabled={isPublishingReply || !newReply.trim() || !replyAuthor.trim()}
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-display font-bold shadow-playful hover:-translate-y-1 transition-all disabled:opacity-50"
                       >
-                        {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
-                        {isLoading ? "Publicando..." : "Publicar respuesta"}
+                        {isPublishingReply ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
+                        {isPublishingReply ? "Publicando..." : "Publicar respuesta"}
                       </button>
                     </form>
                   </div>
