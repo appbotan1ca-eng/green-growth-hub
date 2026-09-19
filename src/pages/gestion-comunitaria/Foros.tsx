@@ -1,33 +1,12 @@
-import { MessageSquare, Send, Loader2, User, Clock, RotateCcw, ArrowRight, Heart } from "lucide-react";
+import { MessageSquare, Send, Loader2, User, Clock, RotateCcw, ArrowRight, ArrowLeft, Eye } from "lucide-react";
 import { useState, FormEvent, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
+import { supabase, type ForumTopic, type ForumReply } from "@/lib/supabase";
 
-type Topic = {
-  id: string;
-  title: string;
-  content: string;
-  author_name: string;
-  author_role: string;
-  created_at: string;
-  replies_count: number;
-  views_count: number;
-  tags: string[];
-};
-
-type Reply = {
-  id: string;
-  topic_id: string;
-  content: string;
-  author_name: string;
-  author_role: string;
-  created_at: string;
-};
-
-const initialTopics: Topic[] = [
+const initialTopics: ForumTopic[] = [
   {
     id: "1",
     title: "¿Qué especies nativas han encontrado en el colegio?",
@@ -75,37 +54,43 @@ const initialTopics: Topic[] = [
 ];
 
 export default function Foros() {
-  const [topics, setTopics] = useState<Topic[]>(initialTopics);
+  const [topics, setTopics] = useState<ForumTopic[]>(initialTopics);
   const [showForm, setShowForm] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
-  const [replies, setReplies] = useState<Reply[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<ForumTopic | null>(null);
+  const [replies, setReplies] = useState<ForumReply[]>([]);
   const [newTopic, setNewTopic] = useState({ title: "", content: "", author: "", role: "", tags: "" });
   const [newReply, setNewReply] = useState("");
   const [replyAuthor, setReplyAuthor] = useState("");
   const [replyRole, setReplyRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingReplies, setIsLoadingReplies] = useState(false);
+  const [isSupabaseConfigured] = useState(!!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY));
 
   useEffect(() => {
     if (selectedTopic) {
       loadReplies(selectedTopic.id);
+      incrementViews(selectedTopic.id);
     }
   }, [selectedTopic]);
 
   const loadReplies = async (topicId: string) => {
     setIsLoadingReplies(true);
     try {
-      const { data, error } = await supabase
-        .from('forum_replies')
-        .select('*')
-        .eq('topic_id', topicId)
-        .order('created_at', { ascending: true });
+      if (isSupabaseConfigured) {
+        const { data, error } = await supabase
+          .from('forum_replies')
+          .select('*')
+          .eq('topic_id', topicId)
+          .order('created_at', { ascending: true });
 
-      if (error) {
-        console.log('Using local replies (Supabase not configured)');
-        setReplies([]);
+        if (error) {
+          console.log('Supabase error, using local:', error.message);
+          setReplies([]);
+        } else {
+          setReplies(data || []);
+        }
       } else {
-        setReplies(data || []);
+        setReplies([]);
       }
     } catch {
       setReplies([]);
@@ -114,13 +99,23 @@ export default function Foros() {
     }
   };
 
+  const incrementViews = async (topicId: string) => {
+    if (!isSupabaseConfigured) return;
+    try {
+      await supabase.rpc('increment_views', { topic_id: topicId });
+      setTopics(topics.map(t => t.id === topicId ? { ...t, views_count: t.views_count + 1 } : t));
+    } catch {
+      console.log('Could not increment views');
+    }
+  };
+
   const handleNewTopic = async (e: FormEvent) => {
     e.preventDefault();
     if (!newTopic.title.trim() || !newTopic.content.trim() || !newTopic.author.trim()) return;
     setIsLoading(true);
     try {
-      const topic: Topic = {
-        id: Date.now().toString(),
+      const topic: ForumTopic = {
+        id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
         title: newTopic.title,
         content: newTopic.content,
         author_name: newTopic.author,
@@ -130,11 +125,25 @@ export default function Foros() {
         views_count: 1,
         tags: newTopic.tags.split(",").map(t => t.trim()).filter(Boolean),
       };
+
+      if (isSupabaseConfigured) {
+        const { error } = await supabase.from('forum_topics').insert({
+          id: topic.id,
+          title: topic.title,
+          content: topic.content,
+          author_name: topic.author_name,
+          author_role: topic.author_role,
+          tags: topic.tags,
+        });
+        if (error) throw error;
+      }
+
       setTopics([topic, ...topics]);
       setNewTopic({ title: "", content: "", author: "", role: "", tags: "" });
       setShowForm(false);
       toast.success("Tema creado en el foro");
-    } catch {
+    } catch (err) {
+      console.error(err);
       toast.error("Error al crear tema");
     } finally {
       setIsLoading(false);
@@ -146,19 +155,32 @@ export default function Foros() {
     if (!newReply.trim() || !replyAuthor.trim() || !selectedTopic) return;
     setIsLoading(true);
     try {
-      const reply: Reply = {
-        id: Date.now().toString(),
+      const reply: ForumReply = {
+        id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
         topic_id: selectedTopic.id,
         content: newReply,
         author_name: replyAuthor,
         author_role: replyRole || "Comunidad",
         created_at: new Date().toISOString(),
       };
+
+      if (isSupabaseConfigured) {
+        const { error } = await supabase.from('forum_replies').insert({
+          id: reply.id,
+          topic_id: reply.topic_id,
+          content: reply.content,
+          author_name: reply.author_name,
+          author_role: reply.author_role,
+        });
+        if (error) throw error;
+      }
+
       setReplies([...replies, reply]);
       setTopics(topics.map(t => t.id === selectedTopic.id ? { ...t, replies_count: t.replies_count + 1 } : t));
       setNewReply("");
       toast.success("Respuesta publicada");
-    } catch {
+    } catch (err) {
+      console.error(err);
       toast.error("Error al responder");
     } finally {
       setIsLoading(false);
@@ -182,7 +204,9 @@ export default function Foros() {
         icon={MessageSquare}
         eyebrow="Gestión Comunitaria"
         title="Foros de la comunidad"
-        subtitle="Espacio de discusión e interacción sobre temas del proyecto productivo. Funciona con Supabase."
+        subtitle={isSupabaseConfigured 
+          ? "Espacio de discusión e interacción sobre temas del proyecto. Conectado a Supabase." 
+          : "Espacio de discusión (modo local - configura Supabase para persistencia)"}
       />
 
       <section className="py-16">
@@ -304,7 +328,7 @@ export default function Foros() {
                       </div>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground shrink-0">
                         <span className="flex items-center gap-1"><MessageSquare size={14} /> {topic.replies_count}</span>
-                        <span className="flex items-center gap-1"><Clock size={14} /> {topic.views_count}</span>
+                        <span className="flex items-center gap-1"><Eye size={14} /> {topic.views_count}</span>
                         <ArrowRight className="text-primary" size={18} />
                       </div>
                     </div>
@@ -318,7 +342,7 @@ export default function Foros() {
                 onClick={() => setSelectedTopic(null)}
                 className="inline-flex items-center gap-2 text-primary hover:underline font-body text-sm"
               >
-                <ArrowRight className="rotate-180" size={18} /> Volver a temas
+                <ArrowLeft size={18} /> Volver a temas
               </button>
 
               <SectionCard className="p-6">

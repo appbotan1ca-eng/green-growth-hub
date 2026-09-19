@@ -1,18 +1,10 @@
-import { MessageCircle, Send, Loader2, Heart, Smile, ExternalLink } from "lucide-react";
+import { MessageCircle, Send, Loader2, Heart, Smile, ExternalLink, Shield } from "lucide-react";
 import { useState, FormEvent, useEffect, useRef } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
-
-type ChatMessage = {
-  id: string;
-  content: string;
-  author_name: string;
-  is_bot: boolean;
-  created_at: string;
-};
+import { supabase, type ChatMessage } from "@/lib/supabase";
 
 const botResponses: Record<string, string> = {
   sembrar: "Para guías de siembra, visita nuestra sección de Tutoriales y guías en Gestión Directiva. Tenemos la guía oficial de MinAmbiente y un video tutorial paso a paso. 🌿",
@@ -34,6 +26,7 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isSupabaseConfigured = !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
 
   useEffect(() => {
     checkConnection();
@@ -45,6 +38,10 @@ export default function Chat() {
   }, [messages]);
 
   const checkConnection = async () => {
+    if (!isSupabaseConfigured) {
+      setIsConnected(false);
+      return;
+    }
     try {
       const { error } = await supabase.from('chat_messages').select('id').limit(1);
       setIsConnected(!error);
@@ -70,7 +67,7 @@ export default function Chat() {
     if (!newMessage.trim() || !author.trim()) return;
 
     const userMsg: ChatMessage = {
-      id: Date.now().toString(),
+      id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
       content: newMessage,
       author_name: author,
       is_bot: false,
@@ -84,7 +81,7 @@ export default function Chat() {
 
     setTimeout(() => {
       const botMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
+        id: isSupabaseConfigured ? crypto.randomUUID() : (Date.now() + 1).toString(),
         content: getBotResponse(msgText),
         author_name: "BotaniApp",
         is_bot: true,
@@ -94,19 +91,15 @@ export default function Chat() {
       setIsLoading(false);
     }, 800);
 
-    try {
-      await supabase.from('chat_messages').insert({
-        content: msgText,
-        author_name: author,
-        is_bot: false,
-      });
-      await supabase.from('chat_messages').insert({
-        content: getBotResponse(msgText),
-        author_name: "BotaniApp",
-        is_bot: true,
-      });
-    } catch {
-      console.log('Supabase not configured, using local only');
+    if (isSupabaseConfigured) {
+      try {
+        await supabase.from('chat_messages').insert([
+          { id: userMsg.id, content: msgText, author_name: author, is_bot: false },
+          { id: (Date.now() + 1).toString(), content: getBotResponse(msgText), author_name: "BotaniApp", is_bot: true },
+        ]);
+      } catch {
+        console.log('Supabase insert failed, using local only');
+      }
     }
   };
 
@@ -120,7 +113,9 @@ export default function Chat() {
         icon={MessageCircle}
         eyebrow="Gestión Comunitaria"
         title="Chat de la comunidad"
-        subtitle="Canal de comunicación permanente para consultas, sugerencias e interacción. Funciona con Supabase."
+        subtitle={isSupabaseConfigured && isConnected
+          ? "Canal de comunicación permanente conectado a Supabase."
+          : "Canal de comunicación (modo local - configura Supabase para persistencia)"}
       />
 
       <section className="py-16">
@@ -128,11 +123,16 @@ export default function Chat() {
           <SectionCard title="Chat en vivo" className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                <span className={`w-3 h-3 rounded-full ${isSupabaseConfigured && isConnected ? 'bg-green-500' : 'bg-yellow-500'}`} />
                 <span className="font-body text-sm text-muted-foreground">
-                  {isConnected ? "Conectado a Supabase" : "Modo local (Supabase no configurado)"}
+                  {isSupabaseConfigured && isConnected ? "Conectado a Supabase" : "Modo local (Supabase no configurado)"}
                 </span>
               </div>
+              {!isSupabaseConfigured && (
+                <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
+                  Configura .env para persistencia
+                </span>
+              )}
             </div>
             <div className="h-96 overflow-y-auto p-4 space-y-4 bg-background rounded-2xl border border-border mb-4">
               {messages.map((msg) => (
@@ -225,14 +225,14 @@ export default function Chat() {
 
           <div className="p-6 rounded-2xl bg-secondary/50 border border-border">
             <h3 className="font-display font-bold text-foreground mb-3 flex items-center gap-2">
-              <MessageCircle className="text-primary" size={22} /> Cumplimiento de requisitos
+              <Shield className="text-primary" size={22} /> Cumplimiento de requisitos
             </h3>
             <ul className="space-y-2 font-body text-sm text-muted-foreground">
-              <li>✓ Chat permanente integrado en la plataforma con Supabase</li>
+              <li>✓ Chat permanente integrado en la plataforma</li>
               <li>✓ Respuestas automáticas para consultas frecuentes (siembra, residuos, identificación, encuesta)</li>
               <li>✓ Enlace a WhatsApp del equipo</li>
               <li>✓ Formulario de contacto accesible</li>
-              <li>✓ Persistencia de mensajes en base de datos (cuando Supabase esté configurado)</li>
+              <li>{isSupabaseConfigured && isConnected ? "✓" : "○"} Persistencia en Supabase (requiere .env configurado)</li>
             </ul>
           </div>
         </div>
