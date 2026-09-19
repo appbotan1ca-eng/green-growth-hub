@@ -30,8 +30,8 @@ export default function Footer() {
         </div>
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center gap-2 mb-4">
-            <img src={leafMascot} alt="BotaniApp" className="h-8 w-8" />
-            <span className="font-display text-xl font-bold text-primary-foreground">BotaniApp</span>
+            <img src={leafMascot} alt="FloraQuest" className="h-8 w-8" />
+            <span className="font-display text-xl font-bold text-primary-foreground">FloraQuest</span>
           </div>
           <p className="text-primary-foreground/60 font-body text-sm mb-2">
             🌱 Aprende, Crece, Protege 🌍

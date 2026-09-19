@@ -1,4 +1,4 @@
--- Supabase SQL Schema for BotaniApp Forum & Chat
+-- Supabase SQL Schema for FloraQuest Forum & Chat
 -- Ejecuta esto en Supabase Dashboard > SQL Editor
 
 -- Enable UUID extension

@@ -37,7 +37,7 @@ export default function WelcomeSection() {
           </motion.h2>
           <motion.p variants={fadeUp} custom={2} className="text-lg text-muted-foreground max-w-3xl mx-auto font-body leading-relaxed">
             Somos estudiantes de Media Técnica del <strong className="text-foreground">Instituto Técnico Mercedes Abrego</strong>, 
-            apasionados por la educación ambiental y la tecnología. Creamos <strong className="text-primary">BotaniApp</strong>, 
+            apasionados por la educación ambiental y la tecnología. Creamos <strong className="text-primary">FloraQuest</strong>, 
             una aplicación educativa sobre botánica que busca fortalecer los conocimientos ambientales de nuestra comunidad 
             de manera interactiva y divertida.
           </motion.p>

@@ -16,7 +16,7 @@ export default function ImpactoAmbiental() {
         icon={Globe2}
         eyebrow="Impacto ambiental"
         title="Sensibilización que transforma"
-        subtitle="El problema ambiental, nuestra solución y los beneficios que genera BotaniApp."
+        subtitle="El problema ambiental, nuestra solución y los beneficios que genera FloraQuest."
       />
 
       <section className="py-16">
@@ -30,7 +30,7 @@ export default function ImpactoAmbiental() {
           </SectionCard>
           <SectionCard icon={Lightbulb} title="Solución propuesta" delay={0.1}>
             <p>
-              BotaniApp convierte la educación ambiental en una experiencia interactiva: contenidos
+              FloraQuest convierte la educación ambiental en una experiencia interactiva: contenidos
               claros, retos prácticos y divulgación digital que motivan a cuidar las plantas y el
               entorno todos los días.
             </p>

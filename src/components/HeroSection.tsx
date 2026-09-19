@@ -31,7 +31,7 @@ export default function HeroSection() {
           transition={{ type: "spring", stiffness: 200, damping: 15 }}
           className="mb-6"
         >
-          <img src={leafMascot} alt="BotaniApp mascota" className="mx-auto h-32 w-32 animate-float drop-shadow-2xl" />
+          <img src={leafMascot} alt="FloraQuest mascota" className="mx-auto h-32 w-32 animate-float drop-shadow-2xl" />
         </motion.div>
 
         <motion.h1
@@ -40,7 +40,7 @@ export default function HeroSection() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-5xl sm:text-7xl font-display font-black text-primary-foreground leading-tight mb-4"
         >
-          BotaniApp
+          FloraQuest
         </motion.h1>
 
         <motion.p

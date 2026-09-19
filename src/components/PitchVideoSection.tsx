@@ -21,7 +21,7 @@ export default function PitchVideoSection() {
             </span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-display font-black text-gradient-green mb-4">
-            Conoce BotaniApp en video
+            Conoce FloraQuest en video
           </h2>
           <p className="text-muted-foreground font-body text-lg max-w-2xl mx-auto">
             Mira nuestro pitch y descubre cómo estamos transformando la educación ambiental 🌱
@@ -38,7 +38,7 @@ export default function PitchVideoSection() {
           <div className="relative w-full aspect-video bg-black">
             <iframe
               src={`https://drive.google.com/file/d/${VIDEO_ID}/preview`}
-              title="Video Pitch BotaniApp"
+              title="Video Pitch FloraQuest"
               allow="autoplay; encrypted-media"
               allowFullScreen
               className="absolute inset-0 w-full h-full"

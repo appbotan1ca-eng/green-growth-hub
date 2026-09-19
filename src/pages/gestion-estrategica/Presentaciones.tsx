@@ -13,12 +13,12 @@ export default function Presentaciones() {
         icon={Presentation}
         eyebrow="Gestión Estratégica"
         title="Presentación del proyecto"
-        subtitle="Presentación en Canva del proyecto productivo BotaniApp."
+        subtitle="Presentación en Canva del proyecto productivo FloraQuest."
       />
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <SectionCard icon={Presentation} title="Presentación principal: BotaniApp">
+          <SectionCard icon={Presentation} title="Presentación principal: FloraQuest">
             <p className="mb-4">
               Presentación en Canva que explica el problema identificado, la solución propuesta,
               el proceso de implementación y el impacto esperado del proyecto.

@@ -24,7 +24,7 @@ export default function SobreProyecto() {
         icon={Sparkles}
         eyebrow="Sobre el proyecto"
         title="Nuestro proyecto productivo"
-        subtitle="Problema identificado, objetivos, justificación e impacto esperado de BotaniApp."
+        subtitle="Problema identificado, objetivos, justificación e impacto esperado de FloraQuest."
       />
 
       <section className="py-16">
@@ -58,7 +58,7 @@ export default function SobreProyecto() {
 
           <SectionCard icon={HeartHandshake} title="Justificación" delay={0.2}>
             <p>
-              La crisis ambiental exige ciudadanos informados. BotaniApp acerca el conocimiento
+              La crisis ambiental exige ciudadanos informados. FloraQuest acerca el conocimiento
               botánico a los jóvenes con un lenguaje digital y cercano, ayudando a solucionar el
               desinterés y la desinformación ambiental dentro y fuera del aula.
             </p>

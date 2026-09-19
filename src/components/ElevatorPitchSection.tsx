@@ -39,7 +39,7 @@ export default function ElevatorPitchSection() {
             <span className="text-primary-foreground/80 font-display font-bold text-sm uppercase tracking-widest">Elevator Pitch</span>
           </motion.div>
           <motion.h2 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl font-display font-black text-primary-foreground mb-8">
-            ¿Por qué BotaniApp?
+            ¿Por qué FloraQuest?
           </motion.h2>
         </motion.div>
 
@@ -54,14 +54,14 @@ export default function ElevatorPitchSection() {
               variants={fadeUp}
               custom={1}
               src={leafMascot}
-              alt="Mascota BotaniApp"
+              alt="Mascota FloraQuest"
               className="w-32 h-32 animate-wiggle flex-shrink-0"
             />
             <motion.div variants={fadeUp} custom={2}>
               <p className="text-foreground font-body text-lg leading-relaxed mb-4">
                 <strong className="text-primary font-display">¿Sabías que</strong> muchos estudiantes desconocen las plantas que los rodean 
                 y su importancia para el medio ambiente? En el Instituto Técnico Mercedes Abrego identificamos esta necesidad 
-                y creamos <strong className="text-primary">BotaniApp</strong>.
+                y creamos <strong className="text-primary">FloraQuest</strong>.
               </p>
               <p className="text-muted-foreground font-body leading-relaxed mb-4">
                 Nuestra aplicación educativa hace que aprender botánica sea tan divertido como un juego: 
@@ -69,7 +69,7 @@ export default function ElevatorPitchSection() {
                 Todo diseñado para que la educación ambiental sea accesible, entretenida y significativa.
               </p>
               <p className="text-muted-foreground font-body leading-relaxed">
-                Con BotaniApp no solo aprendes sobre plantas, <strong className="text-foreground">te conviertes en un 
+                Con FloraQuest no solo aprendes sobre plantas, <strong className="text-foreground">te conviertes en un 
                 defensor del medio ambiente</strong>. 🌱
               </p>
             </motion.div>

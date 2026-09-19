@@ -13,13 +13,13 @@ const botResponses: Record<string, string> = {
   recicl: "La guía oficial de separación de residuos (MinAmbiente Colombia) está disponible en Tutoriales y guías. También puedes ver la infografía en Gestión Estratégica. ♻️",
   identif: "Para identificar plantas, usa iNaturalist (enlace en Tutoriales y guías) o consulta la infografía del proyecto en Gestión Estratégica. 📱",
   encuesta: "La encuesta de impacto está en Gestión Comunitaria > Encuestas. Tu opinión nos ayuda a mejorar. 📝",
-  hola: "¡Hola! Bienvenido al chat de BotaniApp. ¿En qué podemos ayudarte? 🌱",
+  hola: "¡Hola! Bienvenido al chat de FloraQuest. ¿En qué podemos ayudarte? 🌱",
   gracias: "¡De nada! Estamos para ayudar. Si tienes más preguntas, aquí estaremos. 🌱",
 };
 
 export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: "1", content: "¡Hola! Bienvenido al chat de BotaniApp. ¿En qué podemos ayudarte? 🌱", author_name: "BotaniApp", is_bot: true, created_at: new Date().toISOString() },
+    { id: "1", content: "¡Hola! Bienvenido al chat de FloraQuest. ¿En qué podemos ayudarte? 🌱", author_name: "FloraQuest", is_bot: true, created_at: new Date().toISOString() },
   ]);
   const [newMessage, setNewMessage] = useState("");
   const [author, setAuthor] = useState("");
@@ -83,7 +83,7 @@ export default function Chat() {
       const botMsg: ChatMessage = {
         id: isSupabaseConfigured ? crypto.randomUUID() : (Date.now() + 1).toString(),
         content: getBotResponse(msgText),
-        author_name: "BotaniApp",
+        author_name: "FloraQuest",
         is_bot: true,
         created_at: new Date().toISOString(),
       };
@@ -95,7 +95,7 @@ export default function Chat() {
       try {
         await supabase.from('chat_messages').insert([
           { id: userMsg.id, content: msgText, author_name: author, is_bot: false },
-          { id: (Date.now() + 1).toString(), content: getBotResponse(msgText), author_name: "BotaniApp", is_bot: true },
+          { id: (Date.now() + 1).toString(), content: getBotResponse(msgText), author_name: "FloraQuest", is_bot: true },
         ]);
       } catch {
         console.log('Supabase insert failed, using local only');

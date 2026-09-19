@@ -19,7 +19,7 @@ export default function Contacto() {
       <PageHero
         icon={Mail}
         eyebrow="Contacto"
-        title="Hablemos de BotaniApp"
+        title="Hablemos de FloraQuest"
         subtitle="Escríbenos tus dudas, ideas o comentarios sobre el proyecto."
       />
 
@@ -79,7 +79,7 @@ export default function Contacto() {
               </span>
               <div>
                 <h3 className="font-display font-bold text-foreground">Correo del proyecto</h3>
-                <p className="font-body text-sm text-muted-foreground">botaniapp.proyecto@gmail.com</p>
+                <p className="font-body text-sm text-muted-foreground">FloraQuest.proyecto@gmail.com</p>
               </div>
             </div>
             <div className="p-6 rounded-3xl bg-card border border-border shadow-card flex items-start gap-4">
@@ -97,7 +97,7 @@ export default function Contacto() {
               </span>
               <div>
                 <h3 className="font-display font-bold text-foreground">Redes sociales</h3>
-                <p className="font-body text-sm text-muted-foreground">@botaniapp</p>
+                <p className="font-body text-sm text-muted-foreground">@FloraQuest</p>
               </div>
             </div>
             <div className="p-6 rounded-3xl bg-card border border-border shadow-card flex items-start gap-4">

@@ -74,7 +74,7 @@ export default function ForoDiscusion() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   className="w-full px-4 py-3 rounded-2xl bg-background border border-input font-body text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-                  placeholder="Comparte tu opinión, pregunta o idea sobre BotaniApp..."
+                  placeholder="Comparte tu opinión, pregunta o idea sobre FloraQuest..."
                 />
               </div>
               <button

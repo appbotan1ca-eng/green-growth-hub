@@ -12,12 +12,12 @@ export default function Podcast() {
         icon={Mic}
         eyebrow="Gestión Estratégica"
         title="Pódcast del proyecto"
-        subtitle="Podcast del proyecto BotaniApp alojado en Google Drive."
+        subtitle="Podcast del proyecto FloraQuest alojado en Google Drive."
       />
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <SectionCard title="Podcast BotaniApp" className="mb-8">
+          <SectionCard title="Podcast FloraQuest" className="mb-8">
             <p className="font-body text-sm text-muted-foreground mb-4">
               Podcast del proyecto con conversaciones sobre la experiencia, aprendizajes y desafíos.
               Contenido en videos largos de aproximadamente 1 hora.
@@ -25,7 +25,7 @@ export default function Podcast() {
             <div className="aspect-video rounded-2xl bg-black border border-border overflow-hidden mb-4">
               <iframe
                 src={`https://drive.google.com/file/d/${PODCAST_ID}/preview`}
-                title="Podcast de BotaniApp"
+                title="Podcast de FloraQuest"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="w-full h-full"

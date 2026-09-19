@@ -67,7 +67,7 @@ export default function Capacitacion() {
           <SectionCard title="Nota importante">
             <p className="font-body text-sm text-muted-foreground mb-4">
               Estos son recursos externos de entidades oficiales (Observatorio Ambiental de Barranquilla, INCIVA, Ministerio de Ambiente).
-              El proyecto BotaniApp los recomienda como materiales de apoyo complementarios.
+              El proyecto FloraQuest los recomienda como materiales de apoyo complementarios.
             </p>
             <p className="font-body text-sm text-muted-foreground">
               No se afirma que el proyecto haya realizado o impartido capacitaciones propias. Son referencias externas para quien desee profundizar.

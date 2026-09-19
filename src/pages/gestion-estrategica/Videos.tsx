@@ -17,7 +17,7 @@ export default function Videos() {
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <SectionCard icon={Video} title="Video explicativo de BotaniApp" className="mb-8">
+          <SectionCard icon={Video} title="Video explicativo de FloraQuest" className="mb-8">
             <p className="mb-4">
               Video completo del proyecto productivo que cubre: problema identificado, propuesta de solución,
               proceso de implementación e impacto ambiental/social. Duración mínima 10 minutos.
@@ -25,7 +25,7 @@ export default function Videos() {
             <div className="aspect-video rounded-2xl bg-black border border-border overflow-hidden mb-4">
               <iframe
                 src={`https://drive.google.com/file/d/${VIDEO_ID}/preview`}
-                title="Video del proyecto BotaniApp"
+                title="Video del proyecto FloraQuest"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="w-full h-full"

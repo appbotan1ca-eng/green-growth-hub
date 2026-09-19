@@ -11,12 +11,12 @@ export default function Infografia() {
         icon={Image}
         eyebrow="Gestión Estratégica"
         title="Infografía del proyecto"
-        subtitle="Representación visual del problema ambiental, la solución tecnológica y el impacto del proyecto BotaniApp."
+        subtitle="Representación visual del problema ambiental, la solución tecnológica y el impacto del proyecto FloraQuest."
       />
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <SectionCard title="Infografía principal: BotaniApp - Innovación ambiental educativa">
+          <SectionCard title="Infografía principal: FloraQuest - Innovación ambiental educativa">
             <p className="mb-6">
               Esta infografía diseñada en Canva/Genially explica de forma visual:
             </p>
@@ -44,7 +44,7 @@ export default function Infografia() {
             <div className="rounded-2xl bg-secondary border border-border overflow-hidden mb-6">
               <img
                 src={infografia}
-                alt="Infografía del proyecto BotaniApp"
+                alt="Infografía del proyecto FloraQuest"
                 className="w-full h-auto"
                 loading="lazy"
               />

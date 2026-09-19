@@ -1,4 +1,4 @@
-## Plan: Expansión multi-página de BotaniApp
+## Plan: Expansión multi-página de FloraQuest
 
 La landing page actual (`/`) queda intacta. Agrego nuevas rutas en `src/App.tsx` con un layout compartido (Navbar + Footer ya existentes, ampliando Navbar con menú a las nuevas páginas).
 

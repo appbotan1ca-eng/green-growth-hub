@@ -6,9 +6,9 @@ import SectionCard from "@/components/SectionCard";
 const GOOGLE_FORMS_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdewSZbwgW6tZIHo5vjKDg3Ucf3ETw3rKfqN37sD68oeQwAJQ/viewform?usp=dialog";
 
 const preguntasEncuesta = [
-  "¿Conocías el proyecto BotaniApp antes de visitar esta plataforma?",
+  "¿Conocías el proyecto FloraQuest antes de visitar esta plataforma?",
   "¿Qué tan útil consideras la información presentada en la plataforma?",
-  "¿Crees que BotaniApp contribuye al cuidado del medio ambiente?",
+  "¿Crees que FloraQuest contribuye al cuidado del medio ambiente?",
   "¿Recomendarías la plataforma a otros estudiantes o docentes?",
   "¿Qué funcionalidad te gustaría que se agregara a futuro?",
   "¿Has aplicado algún aprendizaje de la plataforma en tu vida diaria?",
@@ -28,7 +28,7 @@ export default function Encuestas() {
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <SectionCard icon={ClipboardList} title="Encuesta de Impacto - BotaniApp" className="mb-8">
+          <SectionCard icon={ClipboardList} title="Encuesta de Impacto - FloraQuest" className="mb-8">
             <p className="mb-6">
               Ayúdanos a mejorar respondiendo esta encuesta de opinión sobre el proyecto y su impacto
               en la comunidad educativa. Tus respuestas son anónimas.

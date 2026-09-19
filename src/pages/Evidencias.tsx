@@ -21,7 +21,7 @@ export default function Evidencias() {
         icon={Camera}
         eyebrow="Evidencias de implementación"
         title="Evidencias del desarrollo del proyecto"
-        subtitle="Fotografías del proceso, prototipos, productos elaborados y resultados del proyecto BotaniApp."
+        subtitle="Fotografías del proceso, prototipos, productos elaborados y resultados del proyecto FloraQuest."
       />
 
       <section className="py-16">
@@ -54,7 +54,7 @@ export default function Evidencias() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {[
               {
-                titulo: "Plataforma web BotaniApp",
+                titulo: "Plataforma web FloraQuest",
                 descripcion: "Sitio web completo con 9 secciones, recursos multimedia, foros, chat y encuesta.",
                 tipo: "Producto digital",
                 estado: "Completado",
@@ -75,7 +75,7 @@ export default function Evidencias() {
                 enlace: "/gestion-directiva/tutoriales-guias",
               },
               {
-                titulo: "Podcast BotaniApp",
+                titulo: "Podcast FloraQuest",
                 descripcion: "Serie de audio con experiencias, aprendizajes y desafíos del equipo (Google Drive).",
                 tipo: "Producto multimedia",
                 estado: "Completado",
@@ -135,7 +135,7 @@ export default function Evidencias() {
             </div>
             <p className="font-body text-sm text-muted-foreground">
               El proyecto ha desarrollado 50 módulos educativos sobre botánica, educación ambiental y tecnología,
-              disponibles a través de la plataforma BotaniApp.
+              disponibles a través de la plataforma FloraQuest.
             </p>
           </SectionCard>
 

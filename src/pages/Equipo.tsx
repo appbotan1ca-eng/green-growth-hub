@@ -27,7 +27,7 @@ export default function Equipo() {
       <PageHero
         icon={Users}
         eyebrow="Equipo de trabajo"
-        title="Quiénes hacen BotaniApp"
+        title="Quiénes hacen FloraQuest"
         subtitle="Estudiantes de Media Técnica del Instituto Técnico Mercedes Ábrego, grado 11."
       />
 
@@ -70,7 +70,7 @@ export default function Equipo() {
             <div className="relative w-full aspect-video bg-black">
               <iframe
                 src={`https://drive.google.com/file/d/${VIDEO_ID}/preview`}
-                title="Elevator Pitch BotaniApp"
+                title="Elevator Pitch FloraQuest"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"

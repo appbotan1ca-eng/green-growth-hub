@@ -16,7 +16,7 @@ export default function RecursosMultimedia() {
         icon={Clapperboard}
         eyebrow="Recursos multimedia"
         title="Contenidos digitales del proyecto"
-        subtitle="Presentación, infografía, video explicativo y podcast de BotaniApp."
+        subtitle="Presentación, infografía, video explicativo y podcast de FloraQuest."
       />
 
       <section className="py-16 space-y-14">
@@ -92,13 +92,13 @@ export default function RecursosMultimedia() {
                 Video Pitch
               </span>
             </div>
-            <h2 className="text-3xl font-display font-black text-gradient-green">Pitch de BotaniApp</h2>
+            <h2 className="text-3xl font-display font-black text-gradient-green">Pitch de FloraQuest</h2>
           </div>
           <div className="rounded-3xl overflow-hidden shadow-card bg-card border-4 border-primary/20">
             <div className="relative w-full aspect-video bg-black">
               <iframe
                 src={`https://drive.google.com/file/d/${VIDEO_ID}/preview`}
-                title="Video Pitch BotaniApp"
+                title="Video Pitch FloraQuest"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"
@@ -115,7 +115,7 @@ export default function RecursosMultimedia() {
           <div className="rounded-3xl overflow-hidden shadow-card bg-card border border-border">
             <div className="p-6 sm:p-8">
               <p className="font-display font-bold text-lg text-foreground mb-1">
-                BotaniApp en voz alta
+                FloraQuest en voz alta
               </p>
               <p className="font-body text-sm text-muted-foreground mb-5">
                 Un podcast largo de nuestro proyecto que se divide en 6 episodios, disponible en
@@ -124,7 +124,7 @@ export default function RecursosMultimedia() {
               <div className="aspect-video rounded-2xl bg-black border border-border overflow-hidden">
                 <iframe
                   src={`https://drive.google.com/file/d/${PODCAST_ID}/preview`}
-                  title="Podcast de BotaniApp"
+                  title="Podcast de FloraQuest"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                   className="w-full h-full"
