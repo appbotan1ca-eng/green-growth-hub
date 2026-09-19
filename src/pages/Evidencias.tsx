@@ -1,4 +1,4 @@
-import { Camera, Image, FileText, Award, TrendingUp, ExternalLink } from "lucide-react";
+import { Camera, Image, FileText, Award, TrendingUp, ExternalLink, BookOpen } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
@@ -14,51 +14,6 @@ const evidenciasFotos = [
   { img: evidencia4, caption: "Muestras de plantas documentadas en campo", categoria: "Investigación" },
 ];
 
-const productos = [
-  {
-    titulo: "Plataforma web BotaniApp (protótipo navegable)",
-    descripcion: "Sitio web completo con 9 secciones, recursos multimedia, foros, chat y encuesta.",
-    tipo: "Producto digital",
-    estado: "Completado",
-    enlace: "/",
-  },
-  {
-    titulo: "Aplicación móvil BotaniApp (MVP)",
-    descripcion: "Versión mínima viable para Android con identificación de especies y retos.",
-    tipo: "Producto digital",
-    estado: "En desarrollo",
-    enlace: "#",
-  },
-  {
-    titulo: "Infografía: Problema - Solución - Impacto",
-    descripcion: "Material visual para divulgación en redes sociales y espacios físicos del colegio.",
-    tipo: "Material gráfico",
-    estado: "Completado",
-    enlace: "/gestion-estrategica/infografia",
-  },
-  {
-    titulo: "Guía impresa: Separación de residuos escolares",
-    descripcion: "Carteles y folleto distribuido en salones, baños y áreas comunes.",
-    tipo: "Material impreso",
-    estado: "Completado",
-    enlace: "/gestion-directiva/tutoriales-guias",
-  },
-  {
-    titulo: "Podcast BotaniApp - 8 episodios",
-    descripcion: "Serie de audio con experiencias, aprendizajes y desafíos del equipo.",
-    tipo: "Producto multimedia",
-    estado: "Completado",
-    enlace: "/gestion-estrategica/podcast",
-  },
-];
-
-const resultados = [
-  { metrica: "Especies documentadas", valor: "47", icon: Image, descripcion: "Plantas nativas identificadas y fotografiadas en el entorno escolar" },
-  { metrica: "Estudiantes impactados", valor: "230+", icon: Award, descripcion: "Alcance directo en talleres, charlas y uso de la plataforma" },
-  { metrica: "Residuos separados", valor: "1.2 ton", icon: TrendingUp, descripcion: "Estimado de residuos correctamente clasificados tras campañas" },
-  { metrica: "Visitas a la plataforma", valor: "1,847", icon: ExternalLink, descripcion: "Accesos únicos en el primer mes de publicación" },
-];
-
 export default function Evidencias() {
   return (
     <PageLayout>
@@ -66,7 +21,7 @@ export default function Evidencias() {
         icon={Camera}
         eyebrow="Evidencias de implementación"
         title="Evidencias del desarrollo del proyecto"
-        subtitle="Fotografías del proceso, prototipos, productos elaborados y resultados preliminares medibles."
+        subtitle="Fotografías del proceso, prototipos, productos elaborados y resultados del proyecto BotaniApp."
       />
 
       <section className="py-16">
@@ -97,7 +52,50 @@ export default function Evidencias() {
             <FileText className="text-primary" size={28} /> Productos y Prototipos Elaborados
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {productos.map((prod, i) => (
+            {[
+              {
+                titulo: "Plataforma web BotaniApp",
+                descripcion: "Sitio web completo con 9 secciones, recursos multimedia, foros, chat y encuesta.",
+                tipo: "Producto digital",
+                estado: "Completado",
+                enlace: "/",
+              },
+              {
+                titulo: "Infografía: Problema - Solución - Impacto",
+                descripcion: "Material visual para divulgación en redes sociales y espacios físicos del colegio.",
+                tipo: "Material gráfico",
+                estado: "Completado",
+                enlace: "/gestion-estrategica/infografia",
+              },
+              {
+                titulo: "Guía impresa: Separación de residuos",
+                descripcion: "Carteles y folleto distribuido en salones, baños y áreas comunes del ITMA.",
+                tipo: "Material impreso",
+                estado: "Completado",
+                enlace: "/gestion-directiva/tutoriales-guias",
+              },
+              {
+                titulo: "Podcast BotaniApp",
+                descripcion: "Serie de audio con experiencias, aprendizajes y desafíos del equipo (Google Drive).",
+                tipo: "Producto multimedia",
+                estado: "Completado",
+                enlace: "/gestion-estrategica/podcast",
+              },
+              {
+                titulo: "Video explicativo del proyecto",
+                descripcion: "Video completo del proyecto (mínimo 10 min) alojado en Google Drive.",
+                tipo: "Producto multimedia",
+                estado: "Completado",
+                enlace: "/gestion-estrategica/videos",
+              },
+              {
+                titulo: "Presentación Canva del proyecto",
+                descripcion: "Presentación oficial que explica problema, solución, implementación e impacto.",
+                tipo: "Producto digital",
+                estado: "Completado",
+                enlace: "/gestion-estrategica/presentaciones",
+              },
+            ].map((prod, i) => (
               <SectionCard key={prod.titulo} title={prod.titulo} delay={i * 0.06}>
                 <span className="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-secondary text-primary mb-3">
                   {prod.tipo}
@@ -123,33 +121,35 @@ export default function Evidencias() {
           </div>
 
           <h2 className="font-display font-black text-3xl text-gradient-green mb-6 flex items-center gap-3">
-            <TrendingUp className="text-primary" size={28} /> Resultados Preliminares y Métricas
+            <TrendingUp className="text-primary" size={28} /> Resultado real del proyecto
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {resultados.map((res, i) => (
-              <SectionCard key={res.metrica} title={res.metrica} delay={i * 0.07}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <res.icon className="text-primary" size={24} />
-                  </div>
-                  <span className="font-display font-black text-3xl text-gradient-green">{res.valor}</span>
-                </div>
-                <p className="font-body text-sm text-muted-foreground">{res.descripcion}</p>
-              </SectionCard>
-            ))}
-          </div>
+          <SectionCard title="Métrica verificada" className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <BookOpen className="text-primary" size={32} />
+              </div>
+              <div>
+                <span className="font-display font-black text-4xl text-gradient-green">50</span>
+                <p className="font-body text-sm text-muted-foreground">Módulos educativos creados</p>
+              </div>
+            </div>
+            <p className="font-body text-sm text-muted-foreground">
+              El proyecto ha desarrollado 50 módulos educativos sobre botánica, educación ambiental y tecnología,
+              disponibles a través de la plataforma BotaniApp.
+            </p>
+          </SectionCard>
 
           <SectionCard title="Qué se logró" className="mb-6">
             <ul className="space-y-3">
               {[
                 "Plataforma web completamente funcional y navegable con todas las secciones requeridas",
-                "Contenidos educativos base: 47 especies documentadas, guías, tutoriales, infografía",
-                "Producción multimedia completa: video 12 min, podcast 8 episodios, presentación Canva",
-                "Socialización del proyecto con 230+ estudiantes de la institución",
-                "Implementación de separación de residuos en 12 salones y áreas comunes",
-                "Alianzas con 3 expertos externos y 4 organizaciones de apoyo",
-                "Encuesta de impacto con 127 respuestas y análisis publicado",
-                "Foro activo con 4 temas y 40+ participaciones de la comunidad",
+                "50 módulos educativos sobre botánica y educación ambiental",
+                "Producción multimedia completa: video 10+ min, podcast, presentación Canva, infografía",
+                "Implementación de separación de residuos en salones y áreas comunes del ITMA",
+                "Documentación de flora local del entorno escolar",
+                "Encuesta de impacto publicada y accesible (Google Forms)",
+                "Foro y chat funcionales para interacción comunitaria (Supabase)",
+                "Socialización del proyecto con comunidad educativa",
               ].map((logro, i) => (
                 <li key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
                   <TrendingUp className="text-primary shrink-0 mt-0.5" size={20} />
@@ -159,17 +159,16 @@ export default function Evidencias() {
             </ul>
           </SectionCard>
 
-          <SectionCard title="Mejoras identificadas para próxima versión">
+          <SectionCard title="Mejoras identificadas para próximas versiones">
             <ul className="space-y-3">
               {[
                 "Desarrollo de aplicación móvil nativa (Android/iOS) con modo offline",
-                "Ampliación de base de especies a 100+ con fichas técnicas completas",
+                "Ampliación de base de especies con fichas técnicas completas",
                 "Sistema de gamificación: logros, insignias, ranking escolar",
                 "Integración con API de iNaturalist para identificación automática",
                 "Módulo de gestión de huertas escolares (siembra, cosecha, rotación)",
                 "Panel de analíticas para docentes: seguimiento de uso y aprendizaje",
                 "Accesibilidad mejorada: lector de pantalla, alto contraste, multiidioma",
-                "Alianzas con más instituciones para red de huertas escolares intercolegios",
               ].map((mejora, i) => (
                 <li key={i} className="flex items-start gap-3 p-3 rounded-xl bg-card border border-border">
                   <Award className="text-primary shrink-0 mt-0.5" size={20} />
@@ -184,11 +183,12 @@ export default function Evidencias() {
               <Camera className="text-primary" size={22} /> Cumplimiento de requisitos
             </h3>
             <ul className="space-y-2 font-body text-sm text-muted-foreground">
-              <li>✓ Fotografías del proceso (4+ evidencias documentadas)</li>
-              <li>✓ Evidencias del desarrollo del proyecto (fases, trabajo en equipo)</li>
-              <li>✓ Prototipos y productos elaborados (web, app MVP, materiales gráficos/impresos)</li>
-              <li>✓ Resultados preliminares medibles (métricas cuantificables)</li>
-              <li>✓ Análisis de logros y mejoras identificadas</li>
+              <li>✓ 4 fotografías reales del proceso (evidencia-1 a evidencia-4)</li>
+              <li>✓ 6 productos/prototipos reales documentados con enlaces</li>
+              <li>✓ Métrica real verificada: 50 módulos educativos</li>
+              <li>✓ Logros reales del proyecto listados</li>
+              <li>✓ Mejoras identificadas realistas para próximas versiones</li>
+              <li>✓ No se inventan porcentajes, estadísticas ni datos falsos</li>
             </ul>
           </div>
         </div>
