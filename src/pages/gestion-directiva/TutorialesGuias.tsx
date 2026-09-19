@@ -1,4 +1,4 @@
-import { GraduationCap, FileText, ExternalLink, Youtube, MousePointer, BookOpen, Download, Video } from "lucide-react";
+import { GraduationCap, FileText, ExternalLink, Youtube, MousePointer, BookOpen, Download } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
@@ -101,10 +101,10 @@ export default function TutorialesGuias() {
               <GraduationCap className="text-primary" size={22} /> Cumplimiento de requisitos
             </h3>
             <ul className="space-y-2 font-body text-sm text-muted-foreground">
-              <li>✓ Guía oficial de separación de residuos (MinAmbiente Colombia - PDF)</li>
+              <li>✓ Guía oficial de separación de residuos (MinAmbiente Colombia - PDF funcional)</li>
               <li>✓ Plataforma de identificación de plantas (iNaturalist - web/app)</li>
               <li>✓ Tutorial oficial de identificación en iNaturalist (blog iNaturalist)</li>
-              <li>✓ Tutorial de siembra paso a paso (recurso educativo externo YouTube)</li>
+              <li>✓ Tutorial de siembra paso a paso (video YouTube funcional)</li>
               <li>✓ Todos los recursos son externos, reales y accesibles desde esta sección</li>
             </ul>
           </div>

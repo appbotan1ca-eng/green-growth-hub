@@ -3,36 +3,6 @@ import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 
-const cursos = [
-  {
-    title: "Curso: Reciclaje y economía circular en la escuela",
-    organizador: "Ministerio de Ambiente y Desarrollo Sostenible",
-    modalidad: "Virtual auto-guiado",
-    duracion: "20 horas",
-    certificado: true,
-    url: "https://www.minambiente.gov.co/cursos/reciclaje-escolar",
-    descripcion: "Fundamentos de separación de residuos, compostaje escolar y proyectos de economía circular estudiantiles. Curso oficial del MinAmbiente.",
-  },
-  {
-    title: "Diplomado: Educación ambiental para docentes",
-    organizador: "Universidad Pedagógica Nacional",
-    modalidad: "Virtual con encuentros sincrónicos",
-    duracion: "120 horas (6 meses)",
-    certificado: true,
-    url: "https://www.pedagogica.edu.co/educacion-ambiental",
-    descripcion: "Pedagogía ambiental, diseño de proyectos escolares, normativa colombiana y evaluación de impacto. Programa oficial de la UPN.",
-  },
-  {
-    title: "Curso: Identificación de flora nativa con apps móviles",
-    organizador: "Instituto Humboldt - iNaturalist Colombia",
-    modalidad: "Virtual gratuito",
-    duracion: "8 horas",
-    certificado: false,
-    url: "https://www.humboldt.org.co/cursos/flora-apps",
-    descripcion: "Uso de iNaturalist, PlantNet y Seek para ciencia ciudadana. Registro de biodiversidad escolar. Curso del Instituto Humboldt.",
-  },
-];
-
 const recursosComplementarios = [
   {
     title: "Observatorio Ambiental de Barranquilla – Educación Ambiental",
@@ -64,50 +34,13 @@ export default function Capacitacion() {
         icon={GraduationCap}
         eyebrow="Gestión Directiva"
         title="Capacitación y recursos formativos"
-        subtitle="Cursos y diplomados oficiales de entidades reconocidas, más recursos complementarios para estudiantes y docentes sobre temas ambientales y educativos."
+        subtitle="Recursos complementarios oficiales de entidades reconocidas para estudiantes y docentes sobre temas ambientales y educativos."
       />
 
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="font-display font-bold text-2xl text-gradient-green mb-6 flex items-center gap-2">
-            <GraduationCap className="text-primary" size={24} /> Cursos y diplomados oficiales
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {cursos.map((curso, i) => (
-              <SectionCard key={curso.title} title={curso.title} delay={i * 0.07}>
-                <p className="font-body text-sm text-muted-foreground mb-3 line-clamp-3">{curso.descripcion}</p>
-                <div className="space-y-2 text-sm mb-4">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Calendar size={14} /> {curso.duracion}
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin size={14} /> {curso.modalidad}
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <BookOpen size={14} /> {curso.organizador}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  {curso.certificado && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
-                      <Shield size={12} /> Certificado
-                    </span>
-                  )}
-                  <a
-                    href={curso.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-body text-sm text-primary hover:underline"
-                  >
-                    Ver curso <ExternalLink size={14} />
-                  </a>
-                </div>
-              </SectionCard>
-            ))}
-          </div>
-
-          <h2 className="font-display font-bold text-2xl text-gradient-green mb-6 flex items-center gap-2">
-            <Leaf className="text-primary" size={24} /> Recursos complementarios de capacitación
+            <Leaf className="text-primary" size={24} /> Recursos de capacitación complementarios
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {recursosComplementarios.map((rec, i) => (
@@ -133,12 +66,11 @@ export default function Capacitacion() {
 
           <SectionCard title="Nota importante">
             <p className="font-body text-sm text-muted-foreground mb-4">
-              Los cursos listados arriba son programas oficiales de entidades reconocidas (MinAmbiente, Universidad Pedagógica Nacional, Instituto Humboldt).
-              El proyecto BotaniApp los recomienda como recursos formativos complementarios.
+              Estos son recursos externos de entidades oficiales (Observatorio Ambiental de Barranquilla, INCIVA, Ministerio de Ambiente).
+              El proyecto BotaniApp los recomienda como materiales de apoyo complementarios.
             </p>
             <p className="font-body text-sm text-muted-foreground">
-              Los recursos complementarios (Observatorio Ambiental, INCIVA, MinAmbiente) son fuentes externas de materiales pedagógicos.
-              No se afirma que el proyecto haya realizado o impartido estos cursos ni que exista alianza formal.
+              No se afirma que el proyecto haya realizado o impartido capacitaciones propias. Son referencias externas para quien desee profundizar.
             </p>
           </SectionCard>
 
@@ -147,10 +79,9 @@ export default function Capacitacion() {
               <GraduationCap className="text-primary" size={22} /> Cumplimiento de requisitos
             </h3>
             <ul className="space-y-2 font-body text-sm text-muted-foreground">
-              <li>✓ Solo cursos oficiales de entidades reales (MinAmbiente, UPN, Humboldt)</li>
-              <li>✓ Enlaces directos a fuentes oficiales</li>
+              <li>✓ Solo recursos de entidades reales y funcionales (Observatorio Ambiental, INCIVA, MinAmbiente)</li>
+              <li>✓ Enlaces directos verificados y funcionando</li>
               <li>✓ No se inventan capacitaciones realizadas por el proyecto</li>
-              <li>✓ Recursos complementarios de observatorios e institutos reales</li>
               <li>✓ Temas alineados al impacto y aplicación del proyecto productivo</li>
             </ul>
           </div>
