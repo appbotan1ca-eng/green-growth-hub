@@ -81,15 +81,16 @@ begin
 end $$;
 
 -- Function to increment replies count
-create or replace function increment_replies(topic_id uuid)
-returns void language plpgsql as $$
+create or replace function increment_replies()
+returns trigger language plpgsql as $$
 begin
   update forum_topics
   set replies_count = replies_count + 1
-  where id = topic_id;
+  where id = NEW.topic_id;
+  return NEW;
 end $$;
 
 -- Trigger to auto-increment replies count
 create or replace trigger trigger_increment_replies
   after insert on forum_replies
-  for each row execute function increment_replies(NEW.topic_id);
+  for each row execute function increment_replies();
