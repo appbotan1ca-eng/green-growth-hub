@@ -4,7 +4,7 @@ import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 import { toast } from "sonner";
-import { supabase, type ChatMessage } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, type ChatMessage } from "@/lib/supabase";
 
 const botResponses: Record<string, string> = {
   sembrar: "Para guías de siembra, visita nuestra sección de Tutoriales y guías en Gestión Directiva. Tenemos la guía oficial de MinAmbiente y un video tutorial paso a paso. 🌿",
@@ -26,7 +26,7 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const isSupabaseConfigured = !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY);
+  const supabaseReady = isSupabaseConfigured;
 
   useEffect(() => {
     checkConnection();
@@ -38,7 +38,7 @@ export default function Chat() {
   }, [messages]);
 
   const checkConnection = async () => {
-    if (!isSupabaseConfigured) {
+    if (!supabaseReady || !supabase) {
       setIsConnected(false);
       return;
     }
@@ -67,7 +67,7 @@ export default function Chat() {
     if (!newMessage.trim() || !author.trim()) return;
 
     const userMsg: ChatMessage = {
-      id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
+      id: supabaseReady ? crypto.randomUUID() : Date.now().toString(),
       content: newMessage,
       author_name: author,
       is_bot: false,
@@ -81,7 +81,7 @@ export default function Chat() {
 
     setTimeout(() => {
       const botMsg: ChatMessage = {
-        id: isSupabaseConfigured ? crypto.randomUUID() : (Date.now() + 1).toString(),
+        id: supabaseReady ? crypto.randomUUID() : (Date.now() + 1).toString(),
         content: getBotResponse(msgText),
         author_name: "FloraQuest",
         is_bot: true,
@@ -91,7 +91,7 @@ export default function Chat() {
       setIsLoading(false);
     }, 800);
 
-    if (isSupabaseConfigured) {
+    if (supabaseReady && supabase) {
       try {
         await supabase.from('chat_messages').insert([
           { id: userMsg.id, content: msgText, author_name: author, is_bot: false },
@@ -113,7 +113,7 @@ export default function Chat() {
         icon={MessageCircle}
         eyebrow="Gestión Comunitaria"
         title="Chat de la comunidad"
-        subtitle={isSupabaseConfigured && isConnected
+        subtitle={supabaseReady && isConnected
           ? "Canal de comunicación permanente conectado a Supabase."
           : "Canal de comunicación (modo local - configura Supabase para persistencia)"}
       />
@@ -123,12 +123,12 @@ export default function Chat() {
           <SectionCard title="Chat en vivo" className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className={`w-3 h-3 rounded-full ${isSupabaseConfigured && isConnected ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                <span className={`w-3 h-3 rounded-full ${supabaseReady && isConnected ? 'bg-green-500' : 'bg-yellow-500'}`} />
                 <span className="font-body text-sm text-muted-foreground">
-                  {isSupabaseConfigured && isConnected ? "Conectado a Supabase" : "Modo local (Supabase no configurado)"}
+                  {supabaseReady && isConnected ? "Conectado a Supabase" : "Modo local (Supabase no configurado)"}
                 </span>
               </div>
-              {!isSupabaseConfigured && (
+              {!supabaseReady && (
                 <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
                   Configura .env para persistencia
                 </span>

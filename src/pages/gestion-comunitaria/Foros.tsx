@@ -1,10 +1,10 @@
-import { MessageSquare, Send, Loader2, User, Clock, RotateCcw, ArrowRight, ArrowLeft, Eye } from "lucide-react";
+import { MessageSquare, Send, Loader2, User, Clock, RotateCcw, ArrowRight, ArrowLeft, Eye, AlertCircle } from "lucide-react";
 import { useState, FormEvent, useEffect } from "react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 import { toast } from "sonner";
-import { supabase, type ForumTopic, type ForumReply } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured, type ForumTopic, type ForumReply } from "@/lib/supabase";
 
 const initialTopics: ForumTopic[] = [
   {
@@ -64,7 +64,7 @@ export default function Foros() {
   const [replyRole, setReplyRole] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingReplies, setIsLoadingReplies] = useState(false);
-  const [isSupabaseConfigured] = useState(!!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY));
+  const [supabaseReady] = useState(isSupabaseConfigured);
 
   useEffect(() => {
     if (selectedTopic) {
@@ -76,7 +76,7 @@ export default function Foros() {
   const loadReplies = async (topicId: string) => {
     setIsLoadingReplies(true);
     try {
-      if (isSupabaseConfigured) {
+      if (supabaseReady && supabase) {
         const { data, error } = await supabase
           .from('forum_replies')
           .select('*')
@@ -100,7 +100,7 @@ export default function Foros() {
   };
 
   const incrementViews = async (topicId: string) => {
-    if (!isSupabaseConfigured) return;
+    if (!supabaseReady || !supabase) return;
     try {
       await supabase.rpc('increment_views', { topic_id: topicId });
       setTopics(topics.map(t => t.id === topicId ? { ...t, views_count: t.views_count + 1 } : t));
@@ -115,7 +115,7 @@ export default function Foros() {
     setIsLoading(true);
     try {
       const topic: ForumTopic = {
-        id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
+        id: supabaseReady ? crypto.randomUUID() : Date.now().toString(),
         title: newTopic.title,
         content: newTopic.content,
         author_name: newTopic.author,
@@ -126,7 +126,7 @@ export default function Foros() {
         tags: newTopic.tags.split(",").map(t => t.trim()).filter(Boolean),
       };
 
-      if (isSupabaseConfigured) {
+      if (supabaseReady && supabase) {
         const { error } = await supabase.from('forum_topics').insert({
           id: topic.id,
           title: topic.title,
@@ -156,7 +156,7 @@ export default function Foros() {
     setIsLoading(true);
     try {
       const reply: ForumReply = {
-        id: isSupabaseConfigured ? crypto.randomUUID() : Date.now().toString(),
+        id: supabaseReady ? crypto.randomUUID() : Date.now().toString(),
         topic_id: selectedTopic.id,
         content: newReply,
         author_name: replyAuthor,
@@ -164,7 +164,7 @@ export default function Foros() {
         created_at: new Date().toISOString(),
       };
 
-      if (isSupabaseConfigured) {
+      if (supabaseReady && supabase) {
         const { error } = await supabase.from('forum_replies').insert({
           id: reply.id,
           topic_id: reply.topic_id,
@@ -200,12 +200,12 @@ export default function Foros() {
 
   return (
     <PageLayout>
-      <PageHero
+<PageHero
         icon={MessageSquare}
         eyebrow="Gestión Comunitaria"
         title="Foros de la comunidad"
-        subtitle={isSupabaseConfigured 
-          ? "Espacio de discusión e interacción sobre temas del proyecto. Conectado a Supabase." 
+        subtitle={supabaseReady
+          ? "Espacio de discusión e interacción sobre temas del proyecto. Conectado a Supabase."
           : "Espacio de discusión (modo local - configura Supabase para persistencia)"}
       />
 

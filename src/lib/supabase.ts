@@ -3,18 +3,21 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
+const isConfigured = !!(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'https://placeholder.supabase.co');
+
+if (!isConfigured) {
   console.warn(
-    'Supabase credentials not configured. ' +
-    'Create .env file with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY ' +
-    '(see .env.example). Forum/Chat will work in local-only mode.'
+    '⚠️ Supabase NO configurado. ' +
+    'Agrega VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en Netlify (con prefijo VITE_). ' +
+    'Forum/Chat funcionarán en modo local (sin persistencia).'
   );
 }
 
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
-);
+export const supabase = isConfigured
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+export const isSupabaseConfigured = isConfigured;
 
 export type ForumTopic = {
   id: string;
