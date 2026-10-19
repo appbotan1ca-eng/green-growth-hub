@@ -3,13 +3,21 @@ import leafMascot from "@/assets/leaf-mascot.png";
 
 const links = [
   { label: "Inicio", to: "/" },
-  { label: "Sobre el proyecto", to: "/sobre-el-proyecto" },
-  { label: "Equipo de trabajo", to: "/equipo" },
-  { label: "Implementación", to: "/implementacion" },
-  { label: "Recursos multimedia", to: "/recursos-multimedia" },
-  { label: "Biblioteca digital", to: "/biblioteca" },
-  { label: "Impacto ambiental", to: "/impacto-ambiental" },
-  { label: "Participación", to: "/participacion" },
+  { label: "Evidencias", to: "/evidencias" },
+  { label: "Referentes", to: "/gestion-estrategica/referentes" },
+  { label: "Biblioteca Virtual", to: "/gestion-estrategica/documentos" },
+  { label: "Presentaciones", to: "/gestion-estrategica/presentaciones" },
+  { label: "Infografía", to: "/gestion-estrategica/infografia" },
+  { label: "Videos", to: "/gestion-estrategica/videos" },
+  { label: "Pódcast", to: "/gestion-estrategica/podcast" },
+  { label: "Tutoriales y guías", to: "/gestion-directiva/tutoriales-guias" },
+  { label: "Foro de discusión", to: "/gestion-directiva/foro" },
+  { label: "Capacitación", to: "/gestion-directiva/capacitacion" },
+  { label: "Orientación académica", to: "/gestion-organizacional/orientacion-academica" },
+  { label: "Apoyo profesional", to: "/gestion-organizacional/apoyo-profesional" },
+  { label: "Chat", to: "/gestion-comunitaria/chat" },
+  { label: "Encuestas", to: "/gestion-comunitaria/encuestas" },
+  { label: "Foros", to: "/gestion-comunitaria/foros" },
   { label: "Contacto", to: "/contacto" },
 ];
 

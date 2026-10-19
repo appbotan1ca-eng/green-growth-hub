@@ -16,12 +16,12 @@ const gestionItems = [
   {
     label: "Gestión Estratégica",
     items: [
-      { label: "Documentos", to: "/gestion-estrategica/documentos" },
+      { label: "Biblioteca Virtual", to: "/gestion-estrategica/documentos" },
       { label: "Presentaciones", to: "/gestion-estrategica/presentaciones" },
       { label: "Infografía", to: "/gestion-estrategica/infografia" },
       { label: "Videos", to: "/gestion-estrategica/videos" },
       { label: "Pódcast", to: "/gestion-estrategica/podcast" },
-      { label: "Biblioteca Virtual", to: "/gestion-estrategica/biblioteca-virtual" },
+      { label: "Referentes", to: "/gestion-estrategica/referentes" },
     ],
   },
   {

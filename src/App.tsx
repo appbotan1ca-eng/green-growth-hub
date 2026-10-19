@@ -13,7 +13,7 @@ import Presentaciones from "./pages/gestion-estrategica/Presentaciones.tsx";
 import Infografia from "./pages/gestion-estrategica/Infografia.tsx";
 import Videos from "./pages/gestion-estrategica/Videos.tsx";
 import Podcast from "./pages/gestion-estrategica/Podcast.tsx";
-import BibliotecaVirtual from "./pages/gestion-estrategica/BibliotecaVirtual.tsx";
+import Referentes from "./pages/gestion-estrategica/Referentes.tsx";
 // Gestión Directiva
 import TutorialesGuias from "./pages/gestion-directiva/TutorialesGuias.tsx";
 import ForoDiscusion from "./pages/gestion-directiva/ForoDiscusion.tsx";
@@ -44,7 +44,7 @@ const App = () => (
           <Route path="/gestion-estrategica/infografia" element={<Infografia />} />
           <Route path="/gestion-estrategica/videos" element={<Videos />} />
           <Route path="/gestion-estrategica/podcast" element={<Podcast />} />
-          <Route path="/gestion-estrategica/biblioteca-virtual" element={<BibliotecaVirtual />} />
+          <Route path="/gestion-estrategica/referentes" element={<Referentes />} />
           {/* Gestión Directiva */}
           <Route path="/gestion-directiva/tutoriales-guias" element={<TutorialesGuias />} />
           <Route path="/gestion-directiva/foro" element={<ForoDiscusion />} />
