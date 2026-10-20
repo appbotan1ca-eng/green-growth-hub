@@ -2,15 +2,20 @@ import { motion } from "framer-motion";
 import { Users, PlayCircle } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
+import avatarAngelo from "@/assets/avatars/avatar-angelo.jpg";
+import avatarFelipe from "@/assets/avatars/avatar-felipe.jpg";
+import avatarSantiago from "@/assets/avatars/avatar-santiago.jpg";
+import avatarDaniel from "@/assets/avatars/avatar-daniel.jpg";
+import avatarSamira from "@/assets/avatars/avatar-samira.jpg";
 
 const VIDEO_ID = "1kg9CyoE3IdSmC3oQd6azcdYCM9p0nGe_";
 
 const members = [
-  { name: "Angelo Samir Rodríguez Zabala", initials: "AR", role: "Diseño del prototipo" },
-  { name: "Juan Felipe Contreras Velasco", initials: "JC", role: "Investigación" },
-  { name: "Santiago Alejandro Castro Bautista", initials: "SC", role: "Comunicación digital" },
-  { name: "Daniel Esteban Salcedo López", initials: "DS", role: "Desarrollo web" },
-  { name: "Samira Alexandra", initials: "SA", role: "Contenidos y multimedia" },
+  { name: "Angelo Samir Rodríguez Zabala", initials: "AR", role: "Diseño del prototipo", avatar: avatarAngelo },
+  { name: "Juan Felipe Contreras Velasco", initials: "JC", role: "Investigación", avatar: avatarFelipe },
+  { name: "Santiago Alejandro Castro Bautista", initials: "SC", role: "Comunicación digital", avatar: avatarSantiago },
+  { name: "Daniel Esteban Salcedo López", initials: "DS", role: "Desarrollo web", avatar: avatarDaniel },
+  { name: "Samira Alexandra", initials: "SA", role: "Contenidos y multimedia", avatar: avatarSamira },
 ];
 
 const colors = [
@@ -42,9 +47,17 @@ export default function Equipo() {
               transition={{ duration: 0.5, delay: i * 0.08 }}
               className="group flex flex-col items-center p-8 rounded-3xl bg-card border border-border shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all duration-300"
             >
-              <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${colors[i % colors.length]} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                <span className="text-2xl font-display font-black text-primary-foreground">{m.initials}</span>
-              </div>
+              {m.avatar ? (
+                <img
+                  src={m.avatar}
+                  alt={m.name}
+                  className="w-24 h-24 rounded-full object-cover mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg"
+                />
+              ) : (
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${colors[i % colors.length]} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <span className="text-2xl font-display font-black text-primary-foreground">{m.initials}</span>
+                </div>
+              )}
               <h2 className="font-display font-bold text-foreground text-center text-lg mb-1">{m.name}</h2>
               <p className="text-sm text-primary font-display font-semibold">{m.role}</p>
               <p className="text-xs text-muted-foreground font-body mt-1">Estudiante Media Técnica</p>

@@ -3,7 +3,8 @@ import { ExternalLink, Download, Presentation as PresentationIcon, Loader2, Aler
 import { presentacionLinks, type Presentacion } from "@/lib/recursos";
 
 export default function SlideViewer({ presentacion }: { presentacion: Presentacion }) {
-  const { embed, view, download } = presentacionLinks(presentacion.driveId);
+  const { view, download } = presentacionLinks(presentacion.driveId);
+  const embed = presentacion.embedUrl ?? presentacionLinks(presentacion.driveId).embed;
   const [cargando, setCargando] = useState(true);
   const [fallo, setFallo] = useState(false);
 

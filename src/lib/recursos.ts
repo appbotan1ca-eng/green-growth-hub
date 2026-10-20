@@ -9,6 +9,11 @@ export type Presentacion = {
    * del iframe, para no dejar el error del navegador expuesto en la página.
    */
   embedHabilitado: boolean;
+  /**
+   * Sobrescribe el visor por defecto cuando el archivo solo funciona con el visor
+   * genérico de Drive (drive.google.com/file/d/{id}/preview) y no con el de Documentos.
+   */
+  embedUrl?: string;
 };
 
 export type Infografia = {
@@ -26,9 +31,15 @@ export const presentacionLinks = (driveId: string) => ({
   download: `https://drive.google.com/uc?export=download&id=${driveId}`,
 });
 
+/**
+ * El visor de imágenes de Drive que funciona en navegadores actuales es el de thumbnail:
+ * lh3.googleusercontent.com/d/{id}=w900 con w>=1200 dispara ERR_BLOCKED_BY_ORB en Chromium.
+ * Sz pequeños (<=800) sí cargan; el lightbox usa "large" (w1200) y cae a "image" si falla.
+ */
 export const infografiaLinks = (driveId: string) => ({
-  image: `https://lh3.googleusercontent.com/d/${driveId}=w1600`,
-  thumb: `https://lh3.googleusercontent.com/d/${driveId}=w600`,
+  image: `https://drive.google.com/thumbnail?id=${driveId}&sz=w800`,
+  large: `https://drive.google.com/thumbnail?id=${driveId}&sz=w1200`,
+  thumb: `https://drive.google.com/thumbnail?id=${driveId}&sz=w500`,
   view: `https://drive.google.com/file/d/${driveId}/view`,
   download: `https://drive.google.com/uc?export=download&id=${driveId}`,
 });
@@ -48,7 +59,8 @@ export const presentaciones: Presentacion[] = [
     descripcion:
       "Estrategias de extensión agropecuaria para el desarrollo rural del municipio de Páez.",
     driveId: "1R9ybSnemV9-VBTQzGDwGXz7UMd0lMh-h",
-    embedHabilitado: false,
+    embedHabilitado: true,
+    embedUrl: "https://drive.google.com/file/d/1R9ybSnemV9-VBTQzGDwGXz7UMd0lMh-h/preview",
   },
   {
     id: "ecosistema-digital",
@@ -63,7 +75,8 @@ export const presentaciones: Presentacion[] = [
     titulo: "El Cuaderno de Campo Vivo",
     descripcion: "Registro de campo para documentar y sacar conclusiones del entorno natural.",
     driveId: "1bLCMLvCCnn_VCHKO9nDV26siKRxbo6CZ",
-    embedHabilitado: false,
+    embedHabilitado: true,
+    embedUrl: "https://drive.google.com/file/d/1bLCMLvCCnn_VCHKO9nDV26siKRxbo6CZ/preview",
   },
   {
     id: "digital-field-notebook",
@@ -111,7 +124,7 @@ export const infografias: Infografia[] = [
     titulo: "Apps para identificar la naturaleza",
     descripcion:
       "Aplicaciones móviles como recurso para identificar especies de la naturaleza.",
-    driveId: "18GjqT30aPdWRPqL324eLrKZ45b6516q",
-    embedHabilitado: false,
+    driveId: "18GjqT30aPdWRPqL324eLrKZ45b6516qM",
+    embedHabilitado: true,
   },
 ];

@@ -1,5 +1,10 @@
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
+import avatarAngelo from "@/assets/avatars/avatar-angelo.jpg";
+import avatarFelipe from "@/assets/avatars/avatar-felipe.jpg";
+import avatarSantiago from "@/assets/avatars/avatar-santiago.jpg";
+import avatarDaniel from "@/assets/avatars/avatar-daniel.jpg";
+import avatarSamira from "@/assets/avatars/avatar-samira.jpg";
 
 const fadeUp = {
   hidden: { y: 40, opacity: 0 },
@@ -10,11 +15,11 @@ const fadeUp = {
 };
 
 const members = [
-  { name: "Angelo Samir Rodríguez Zabala", initials: "AR" },
-  { name: "Juan Felipe Contreras Velasco", initials: "JC" },
-  { name: "Santiago Alejandro Castro Bautista", initials: "SC" },
-  { name: "Daniel Esteban Salcedo López", initials: "DS" },
-  { name: "Samira Alexandra", initials: "SA" },
+  { name: "Angelo Samir Rodríguez Zabala", initials: "AR", avatar: avatarAngelo },
+  { name: "Juan Felipe Contreras Velasco", initials: "JC", avatar: avatarFelipe },
+  { name: "Santiago Alejandro Castro Bautista", initials: "SC", avatar: avatarSantiago },
+  { name: "Daniel Esteban Salcedo López", initials: "DS", avatar: avatarDaniel },
+  { name: "Samira Alexandra", initials: "SA", avatar: avatarSamira },
 ];
 
 const colors = [
@@ -56,9 +61,17 @@ export default function TeamSection() {
               custom={i + 1}
               className="group flex flex-col items-center p-8 rounded-3xl bg-card border border-border shadow-card hover:shadow-card-hover hover:-translate-y-2 transition-all duration-300"
             >
-              <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                <span className="text-2xl font-display font-black text-primary-foreground">{m.initials}</span>
-              </div>
+              {m.avatar ? (
+                <img
+                  src={m.avatar}
+                  alt={m.name}
+                  className="w-24 h-24 rounded-full object-cover mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg"
+                />
+              ) : (
+                <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <span className="text-2xl font-display font-black text-primary-foreground">{m.initials}</span>
+                </div>
+              )}
               <h4 className="font-display font-bold text-foreground text-center text-lg mb-1">{m.name}</h4>
               <p className="text-sm text-muted-foreground font-body">Estudiante Media Técnica</p>
               <p className="text-xs text-primary font-display font-semibold mt-1">Inst. Técnico Mercedes Abrego</p>

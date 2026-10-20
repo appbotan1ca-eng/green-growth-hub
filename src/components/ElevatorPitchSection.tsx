@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Rocket, Leaf, Smartphone, GraduationCap } from "lucide-react";
-import leafMascot from "@/assets/leaf-mascot.png";
+import leafMascot from "@/assets/logo.webp";
 
 const fadeUp = {
   hidden: { y: 40, opacity: 0 },

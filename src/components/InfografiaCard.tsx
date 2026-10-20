@@ -3,7 +3,7 @@ import { ExternalLink, Download, Image as ImageIcon, X, ZoomIn, AlertTriangle } 
 import { infografiaLinks, type Infografia } from "@/lib/recursos";
 
 export default function InfografiaCard({ infografia }: { infografia: Infografia }) {
-  const { image, view, download } = infografiaLinks(infografia.driveId);
+  const { image, large, view, download } = infografiaLinks(infografia.driveId);
   const [ampliada, setAmpliada] = useState(false);
 
   useEffect(() => {
@@ -147,9 +147,10 @@ export default function InfografiaCard({ infografia }: { infografia: Infografia 
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={image}
+              src={large || image}
               alt={infografia.titulo}
               className="w-full h-auto rounded-xl"
+              onError={(e) => { e.currentTarget.src = image; }}
             />
           </div>
         </div>

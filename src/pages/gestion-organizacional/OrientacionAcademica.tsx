@@ -2,13 +2,18 @@ import { Users, GraduationCap, Mail, MapPin } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
+import avatarAngelo from "@/assets/avatars/avatar-angelo.jpg";
+import avatarFelipe from "@/assets/avatars/avatar-felipe.jpg";
+import avatarSantiago from "@/assets/avatars/avatar-santiago.jpg";
+import avatarDaniel from "@/assets/avatars/avatar-daniel.jpg";
+import avatarSamira from "@/assets/avatars/avatar-samira.jpg";
 
 const equipo = [
-  { nombre: "Angelo Samir Rodríguez Zabala", rol: "Diseño del prototipo", iniciales: "AR" },
-  { nombre: "Juan Felipe Contreras Velasco", rol: "Investigación", iniciales: "JC" },
-  { nombre: "Santiago Alejandro Castro Bautista", rol: "Comunicación digital", iniciales: "SC" },
-  { nombre: "Daniel Esteban Salcedo López", rol: "Desarrollo web", iniciales: "DS" },
-  { nombre: "Samira Alexandra", rol: "Contenidos y multimedia", iniciales: "SA" },
+  { nombre: "Angelo Samir Rodríguez Zabala", rol: "Diseño del prototipo", iniciales: "AR", avatar: avatarAngelo },
+  { nombre: "Juan Felipe Contreras Velasco", rol: "Investigación", iniciales: "JC", avatar: avatarFelipe },
+  { nombre: "Santiago Alejandro Castro Bautista", rol: "Comunicación digital", iniciales: "SC", avatar: avatarSantiago },
+  { nombre: "Daniel Esteban Salcedo López", rol: "Estudiante de Media Técnica 11°", iniciales: "DS", avatar: avatarDaniel },
+  { nombre: "Samira Alexandra", rol: "Contenidos y multimedia", iniciales: "SA", avatar: avatarSamira },
 ];
 
 const colors = [
@@ -38,9 +43,17 @@ export default function OrientacionAcademica() {
             {equipo.map((miembro, i) => (
               <SectionCard key={miembro.nombre} title={miembro.nombre} delay={i * 0.06}>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center text-lg font-bold text-primary-foreground shrink-0`}>
-                    {miembro.iniciales}
-                  </div>
+                  {miembro.avatar ? (
+                    <img
+                      src={miembro.avatar}
+                      alt={miembro.nombre}
+                      className="w-12 h-12 rounded-full object-cover shrink-0"
+                    />
+                  ) : (
+                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${colors[i]} flex items-center justify-center text-lg font-bold text-primary-foreground shrink-0`}>
+                      {miembro.iniciales}
+                    </div>
+                  )}
                   <div>
                     <p className="font-display font-bold text-sm text-foreground">{miembro.rol}</p>
                     <p className="font-body text-xs text-muted-foreground">Estudiante Media Técnica 11°</p>

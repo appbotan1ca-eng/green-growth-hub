@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sprout, ArrowDown } from "lucide-react";
-import leafMascot from "@/assets/leaf-mascot.png";
+import leafMascot from "@/assets/logo.webp";
 
 export default function HeroSection() {
   return (

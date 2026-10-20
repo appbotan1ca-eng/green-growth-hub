@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import leafMascot from "@/assets/leaf-mascot.png";
+import leafMascot from "@/assets/logo.webp";
 
 const links = [
   { label: "Inicio", to: "/" },
