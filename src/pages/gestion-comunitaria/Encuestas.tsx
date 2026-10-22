@@ -4,6 +4,7 @@ import PageHero from "@/components/PageHero";
 import SectionCard from "@/components/SectionCard";
 
 const GOOGLE_FORMS_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdewSZbwgW6tZIHo5vjKDg3Ucf3ETw3rKfqN37sD68oeQwAJQ/viewform?usp=dialog";
+const GOOGLE_FORMS_PROYECTO_VIDA_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdewSZbwgW6tZIHo5vjKDg3Ucf3ETw3rKfqN37sD68oeQwAJQ/viewform?usp=dialog";
 
 const preguntasEncuesta = [
   "¿Conocías el proyecto FloraQuest antes de visitar esta plataforma?",
@@ -50,6 +51,25 @@ export default function Encuestas() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-display font-bold text-lg shadow-playful hover:-translate-y-1 transition-all"
             >
               <ClipboardList size={22} /> Responder encuesta en Google Forms
+            </a>
+            <p className="mt-4 text-xs font-body text-muted-foreground text-center">
+              Se abrirá en una nueva pestaña. La encuesta está alojada en Google Forms.
+            </p>
+          </SectionCard>
+
+          <SectionCard icon={ClipboardList} title="Encuesta sobre el proyecto de vida" className="mb-8">
+            <p className="mb-6">
+              Formulario para reflexionar sobre el proyecto de vida personal y cómo FloraQuest
+              contribuye a la formación, el crecimiento y la sensibilización ambiental de los
+              estudiantes. Tus respuestas son anónimas.
+            </p>
+            <a
+              href={GOOGLE_FORMS_PROYECTO_VIDA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-display font-bold text-lg shadow-playful hover:-translate-y-1 transition-all"
+            >
+              <ClipboardList size={22} /> Responder encuesta sobre el proyecto de vida
             </a>
             <p className="mt-4 text-xs font-body text-muted-foreground text-center">
               Se abrirá en una nueva pestaña. La encuesta está alojada en Google Forms.
